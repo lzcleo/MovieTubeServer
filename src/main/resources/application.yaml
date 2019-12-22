@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: dev
+
+mybatis:
+  config-location: classpath:mybatis/config/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+# pageSize=0时默认查出所有结果
+pagehelper:
+  page-size-zero: true
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#加密配置文件密码等
+jasypt:
+  encryptor:
+    password: MovieTubeServer
+
+jwt:
+  expiration-time: 86400
+  header: Authorization
+  token-prefix: Bearer
+  privateKey: rsa/private-key.pem
+  publicKey: rsa/public-key.pem
+  authorities-key: auth
