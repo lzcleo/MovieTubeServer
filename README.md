@@ -18,6 +18,7 @@
 4. 在开发环境时，启动项目后可以在localhost:45032/MovieTubeServer/api处看见后端提供的接口，方便前端了解后端接口，以及方便后端测试接口，也可以使用postman等工具进行测试，这里除了login、logout接口以外的其他接口都需要经过鉴权才能调用，如果需要测试其他接口，可以在/config/WebSecurityConfig.java类中对cors进行配置
 5. 在开发环境时，开放/api路径查看接口文档，部署时需要关闭
 6. 前后端均fork一份到自己的本地，pull的时候从主仓库拉，push的时候推到自己的仓库，然后发MR给主仓库
+7. controller层路由统一加一个前缀/api，如：/api/module/method
 
 ## 打包部署 ##
 1. 打包脚本后期再完善
