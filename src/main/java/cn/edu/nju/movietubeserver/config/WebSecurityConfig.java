@@ -95,6 +95,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .antMatchers("/api/user/login", "/api/user/logout")
             .permitAll()
 
+            // 暂时允许开放movieAPI，用于测试
+            .antMatchers("/api/movie/**")
+            .permitAll()
+
             // swagger
             .antMatchers("/api")
             .permitAll()
