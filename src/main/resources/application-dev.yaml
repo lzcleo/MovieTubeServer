@@ -9,3 +9,6 @@ spring:
     username: ENC(mk4Q4q7SryfTKtMS9dH3xA==)
     password: ENC(6zxMSjAbhWog4K/9U+P9ifwlzxL31e4G)
     driver-class-name: com.mysql.jdbc.Driver
+  elasticsearch:
+    rest:
+      uris: 172.19.241.56:9200
