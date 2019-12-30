@@ -19,4 +19,8 @@ public interface ESIndexConstant
 
         String CASTS = "casts";
     }
+
+    interface Comment{
+        String MOVIE_ID = "movieId";
+    }
 }
