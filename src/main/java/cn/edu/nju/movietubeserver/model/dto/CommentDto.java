@@ -1,4 +1,4 @@
-package cn.edu.nju.movietubeserver.api.dto;
+package cn.edu.nju.movietubeserver.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +11,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
+public class CommentDto
+{
 
-    private Long id;
+    private String id;
 
-    private Long parentId;
+    private String parentCommentId;
+
+    private String rootCommentId;
 
     private Long movieId;
 
-    private String time;
+    private String createTime;
 
     private Integer fromUserId;
 
