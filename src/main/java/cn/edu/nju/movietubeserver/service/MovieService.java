@@ -1,7 +1,7 @@
 package cn.edu.nju.movietubeserver.service;
 
-import cn.edu.nju.movietubeserver.api.dto.MovieDto;
-import cn.edu.nju.movietubeserver.dao.po.MoviePo;
+import cn.edu.nju.movietubeserver.model.dto.MovieDto;
+import cn.edu.nju.movietubeserver.model.po.MoviePo;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearchService;
 import org.springframework.data.domain.Page;
 

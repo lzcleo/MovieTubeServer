@@ -1,6 +1,6 @@
 package cn.edu.nju.movietubeserver.api;
 
-import cn.edu.nju.movietubeserver.api.dto.MovieDto;
+import cn.edu.nju.movietubeserver.model.dto.MovieDto;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import org.springframework.data.domain.Page;
 
