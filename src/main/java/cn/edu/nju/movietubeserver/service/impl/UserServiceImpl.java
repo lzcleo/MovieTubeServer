@@ -1,10 +1,12 @@
 package cn.edu.nju.movietubeserver.service.impl;
 
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
 import cn.edu.nju.movietubeserver.dao.PermissionDao;
 import cn.edu.nju.movietubeserver.dao.UserDao;
-import cn.edu.nju.movietubeserver.dao.po.UserPo;
+import cn.edu.nju.movietubeserver.model.domain.SimpleUser;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.po.UserPo;
 import cn.edu.nju.movietubeserver.service.UserService;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -67,6 +69,16 @@ public class UserServiceImpl implements UserService
     public boolean verifyPassword(String rawPassword, String encodedPassword)
     {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 查询所有用户的简单信息
+     * @return
+     */
+    @Override
+    public List<SimpleUser> listAllSimpleUsers()
+    {
+        return userDao.listAllSimpleUsers();
     }
 
     private UserPo setAdminPermission(UserPo userPo, Predicate<UserPo> predicate, Consumer<UserPo> consumer)

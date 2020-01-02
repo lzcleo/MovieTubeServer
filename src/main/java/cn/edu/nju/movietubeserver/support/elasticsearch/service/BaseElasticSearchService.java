@@ -5,9 +5,10 @@ import java.io.Serializable;
 import java.util.Optional;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 /**
  * @author dc
@@ -26,9 +27,15 @@ public interface BaseElasticSearchService<T, E, U extends Serializable>
 
     Page<T> listByPage(Integer pageNo, Integer pageSize);
 
-    Page<T> searchByKeyword(Integer pageNo, Integer pageSize, String propertyKeyword, String value);
+    // 进行分词分析，并且根据lucene的评分机制(TF/IDF)来进行评分
+    Page<T> matchSearchByKeyword(String propertyKeyword, String value, Pageable pageable, SortBuilder<?> sortBuilder);
+
+    // 精确匹配，不进行分词分析，文档中必须包含整个搜索的词汇
+    Page<T> termSearchByKeyword(String propertyKeyword, String value, Pageable pageable, SortBuilder<?> sortBuilder);
 
     Page<T> search(QueryBuilder queryBuilder, Pageable pageable, FieldSortBuilder fieldSortBuilder);
+
+    Page<T> search(SearchQuery searchQuery);
 
     BaseElasticSearchDao<E, U> getBaseElasticSearchDao();
 

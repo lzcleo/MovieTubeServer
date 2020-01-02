@@ -1,6 +1,6 @@
 package cn.edu.nju.movietubeserver.api;
 
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import java.security.Principal;
 

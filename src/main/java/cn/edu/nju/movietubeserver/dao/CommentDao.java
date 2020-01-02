@@ -1,15 +1,15 @@
 package cn.edu.nju.movietubeserver.dao;
 
-import cn.edu.nju.movietubeserver.model.po.MoviePo;
+import cn.edu.nju.movietubeserver.model.po.CommentPo;
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author dc
- * @date 2019/12/23 15:11
- */
+ * @author leolu
+ * @create 2019-12-25-20:08
+ **/
 @Repository
-public interface MovieDao extends BaseElasticSearchDao<MoviePo, Long>
+public interface CommentDao extends BaseElasticSearchDao<CommentPo, Long>
 {
 
 }
