@@ -1,7 +1,7 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import cn.edu.nju.movietubeserver.api.UserAPI;
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.service.UserService;
 import cn.edu.nju.movietubeserver.support.jwt.JWTUtil;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
