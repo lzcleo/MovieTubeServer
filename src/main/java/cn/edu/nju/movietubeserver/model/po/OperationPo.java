@@ -1,4 +1,4 @@
-package cn.edu.nju.movietubeserver.dao.po;
+package cn.edu.nju.movietubeserver.model.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

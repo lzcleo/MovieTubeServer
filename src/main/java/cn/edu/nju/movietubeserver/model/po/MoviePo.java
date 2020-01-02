@@ -1,6 +1,6 @@
-package cn.edu.nju.movietubeserver.dao.po;
+package cn.edu.nju.movietubeserver.model.po;
 
-import cn.edu.nju.movietubeserver.api.dto.MovieDto;
+import cn.edu.nju.movietubeserver.model.dto.MovieDto;
 import cn.edu.nju.movietubeserver.utils.ObjectUtil;
 import java.util.List;
 import lombok.AllArgsConstructor;
