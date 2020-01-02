@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://172.19.241.56:3306/movie_tube_db?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: ENC(mk4Q4q7SryfTKtMS9dH3xA==)
     password: ENC(6zxMSjAbhWog4K/9U+P9ifwlzxL31e4G)
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   elasticsearch:
     rest:
       uris: 172.19.241.56:9200
