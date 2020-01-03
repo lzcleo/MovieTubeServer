@@ -1,17 +1,24 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import cn.edu.nju.movietubeserver.api.UserAPI;
+import cn.edu.nju.movietubeserver.model.dto.LoginUserDto;
+import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.po.UserPo;
 import cn.edu.nju.movietubeserver.service.UserService;
 import cn.edu.nju.movietubeserver.support.jwt.JWTUtil;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
 import java.security.Principal;
 import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,44 +50,67 @@ public class UserController implements UserAPI
      */
     @Override
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public RestApiResponse<String> login(@RequestBody UserDto userDto)
+    public RestApiResponse<String> login(@Valid @RequestBody LoginUserDto loginUserDto,
+        final BindingResult bindingResult)
     {
-        if (StringUtils.isEmpty(userDto.getUsername()) && StringUtils.isEmpty(userDto.getEmail()))
+        if (bindingResult.hasErrors())
+        {
+            String errorMessage = Optional.ofNullable(bindingResult.getFieldError())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("表单信息校验不通过，请按要求填写登录信息");
+            return RestApiResponseUtil.createErrorResponse(errorMessage);
+        }
+        if (StringUtils.isEmpty(loginUserDto.getUsername()) && StringUtils.isEmpty(loginUserDto.getEmail()))
         {
             return RestApiResponseUtil.createErrorResponse("用户名或邮箱不能为空");
-        }
-        if (StringUtils.isEmpty(userDto.getPassword()))
-        {
-            return RestApiResponseUtil.createErrorResponse("密码不能为空");
         }
 
         UserDto dbUser = null;
         // 用户名登录
-        if (StringUtils.isNotEmpty(userDto.getUsername()))
+        if (StringUtils.isNotEmpty(loginUserDto.getUsername()))
         {
-            dbUser = userService.getUserByUsername(userDto.getUsername());
+            dbUser = userService.getUserByUsername(loginUserDto.getUsername());
             if (dbUser == null)
             {
-                return RestApiResponseUtil.createErrorResponse("用户" + userDto.getUsername() + "不存在");
+                return RestApiResponseUtil.createErrorResponse("用户" + loginUserDto.getUsername() + "不存在");
             }
         }
 
-        if (StringUtils.isNotEmpty(userDto.getEmail()))
+        if (StringUtils.isNotEmpty(loginUserDto.getEmail()))
         {
-            dbUser = userService.getUserByEmail(userDto.getEmail());
+            dbUser = userService.getUserByEmail(loginUserDto.getEmail());
             if (dbUser == null)
             {
-                return RestApiResponseUtil.createErrorResponse("用户" + userDto.getEmail() + "不存在");
+                return RestApiResponseUtil.createErrorResponse("用户" + loginUserDto.getEmail() + "不存在");
             }
-            userDto.setUsername(dbUser.getUsername());
+            loginUserDto.setUsername(dbUser.getUsername());
         }
 
-        if (!userService.verifyPassword(userDto.getPassword(), dbUser.getPassword()))
+        if (!userService.verifyPassword(loginUserDto.getPassword(), dbUser.getPassword()))
         {
             return RestApiResponseUtil.createErrorResponse("密码错误");
         }
 
-        return RestApiResponseUtil.createSuccessResponse(createToken(userDto.getUsername()));
+        return RestApiResponseUtil.createSuccessResponse(createToken(loginUserDto.getUsername()));
+    }
+
+    @Override
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    public RestApiResponse<Integer> register(@Valid @RequestBody RegisterUserDto registerUserDto,
+        final BindingResult bindingResult)
+    {
+        if (bindingResult.hasErrors())
+        {
+            String errorMessage = Optional.ofNullable(bindingResult.getFieldError())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("表单信息校验不通过，请按要求填写注册信息");
+            return RestApiResponseUtil.createErrorResponse(errorMessage);
+        }
+        if (!StringUtils.equalsIgnoreCase(registerUserDto.getPassword(), registerUserDto.getConfirmPassword()))
+        {
+            return RestApiResponseUtil.createErrorResponse("两次密码输入不一致");
+        }
+        return RestApiResponseUtil.createSuccessResponse(userService.insertUser(UserPo.valueOf(registerUserDto)));
     }
 
     @Override

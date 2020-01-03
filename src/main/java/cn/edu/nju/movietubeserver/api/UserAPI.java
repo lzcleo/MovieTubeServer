@@ -1,8 +1,11 @@
 package cn.edu.nju.movietubeserver.api;
 
+import cn.edu.nju.movietubeserver.model.dto.LoginUserDto;
+import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import java.security.Principal;
+import org.springframework.validation.BindingResult;
 
 /**
  * @author dc
@@ -10,7 +13,9 @@ import java.security.Principal;
  */
 public interface UserAPI
 {
-    RestApiResponse<String> login(UserDto userDto);
+    RestApiResponse<String> login(LoginUserDto loginUserDto, final BindingResult bindingResult);
+
+    RestApiResponse<Integer> register(RegisterUserDto registerUserDto, final BindingResult bindingResult);
 
     RestApiResponse<UserDto> getUserInfo(Principal user);
 
