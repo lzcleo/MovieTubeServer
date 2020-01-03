@@ -1,5 +1,6 @@
 package cn.edu.nju.movietubeserver.service.impl;
 
+import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey;
 import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey.Movie;
 import cn.edu.nju.movietubeserver.dao.MovieDao;
 import cn.edu.nju.movietubeserver.model.dto.MovieDto;
@@ -29,6 +30,24 @@ public class MovieServiceImpl extends BaseElasticSearchServiceImpl<MovieDto, Mov
     public BaseElasticSearchDao<MoviePo, Long> getBaseElasticSearchDao()
     {
         return movieDao;
+    }
+
+    @Override
+    public Page<MovieDto> listByKeyword(Integer pageNo, Integer pageSize, String keyword, String... fieldNames)
+    {
+        return multiMatchSearchByKeyword(PageRequest.of(pageNo, pageSize),
+            SortBuilders.scoreSort().order(SortOrder.DESC),
+            keyword,
+            fieldNames);
+    }
+
+    @Override
+    public Page<MovieDto> listByMovieName(Integer pageNo, Integer pageSize, String movieName)
+    {
+        return matchSearchByKeyword(Movie.TITLE,
+            movieName,
+            PageRequest.of(pageNo, pageSize),
+            SortBuilders.scoreSort().order(SortOrder.DESC));
     }
 
     @Override

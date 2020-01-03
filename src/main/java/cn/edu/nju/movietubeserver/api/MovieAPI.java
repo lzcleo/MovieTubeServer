@@ -15,6 +15,10 @@ public interface MovieAPI
 
     RestApiResponse<MovieDto> getByMovieId(Long movieId);
 
+    RestApiResponse<Page<MovieDto>> listByKeyword(Integer pageNo, Integer pageSize, String keyword);
+
+    RestApiResponse<Page<MovieDto>> listByMovieName(Integer pageNo, Integer pageSize, String movieName);
+
     RestApiResponse<Page<MovieDto>> listByDirectorName(Integer pageNo, Integer pageSize, String directorName);
 
     RestApiResponse<Page<MovieDto>> listByCastName(Integer pageNo, Integer pageSize, String castName);
