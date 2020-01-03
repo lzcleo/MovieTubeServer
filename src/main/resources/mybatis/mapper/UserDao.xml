@@ -34,6 +34,15 @@
     </collection>
   </resultMap>
 
+  <insert id="insertUser" parameterType="UserPo" useGeneratedKeys="true" keyProperty="userPo.userId">
+    INSERT INTO t_users (<include refid="all_columns" />)
+    VALUES
+    (
+    #{userPo.userId}, #{userPo.username}, #{userPo.email},
+    #{userPo.gender}, #{userPo.password}, #{userPo.roleId}
+    )
+  </insert>
+
   <select id="getUserByUsername" resultMap="UserDetailMap">
     SELECT
       u.*,
