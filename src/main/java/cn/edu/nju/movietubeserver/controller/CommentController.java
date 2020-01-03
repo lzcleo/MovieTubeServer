@@ -45,13 +45,10 @@ public class CommentController implements CommentAPI
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize,
         @RequestParam Long movieId)
     {
-        Map<Integer, SimpleUser> simpleUserMap = userService.listAllSimpleUsers()
-            .stream()
-            .collect(Collectors.toMap(SimpleUser::getUserId, u -> u, (oldValue, newValue) -> newValue));
         return RestApiResponseUtil.createSuccessResponse(commentService.listRootCommentByMovieId(pageNo,
             pageSize,
             movieId,
-            simpleUserMap));
+            createSimpleUserMap()));
     }
 
     @Override
@@ -60,14 +57,11 @@ public class CommentController implements CommentAPI
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize,
         @RequestParam Long movieId, @RequestParam String rootCommentId)
     {
-        Map<Integer, SimpleUser> simpleUserMap = userService.listAllSimpleUsers()
-            .stream()
-            .collect(Collectors.toMap(SimpleUser::getUserId, u -> u, (oldValue, newValue) -> newValue));
         return RestApiResponseUtil.createSuccessResponse(commentService.listReplyCommentOfRootComment(pageNo,
             pageSize,
             movieId,
             rootCommentId,
-            simpleUserMap));
+            createSimpleUserMap()));
     }
 
     @Override
@@ -75,13 +69,10 @@ public class CommentController implements CommentAPI
     public RestApiResponse<Page<PostCommentDto>> listUserPostComments(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "30") Integer pageSize, @RequestParam Integer userId)
     {
-        Map<Integer, SimpleUser> simpleUserMap = userService.listAllSimpleUsers()
-            .stream()
-            .collect(Collectors.toMap(SimpleUser::getUserId, u -> u, (oldValue, newValue) -> newValue));
         return RestApiResponseUtil.createSuccessResponse(commentService.listUserPostComments(pageNo,
             pageSize,
             userId,
-            simpleUserMap));
+            createSimpleUserMap()));
     }
 
     @Override
@@ -124,6 +115,13 @@ public class CommentController implements CommentAPI
     {
         commentService.deleteByMovieId(movieId);
         return RestApiResponseUtil.createSuccessResponse();
+    }
+
+    private Map<Integer, SimpleUser> createSimpleUserMap()
+    {
+        return userService.listAllSimpleUsers()
+            .stream()
+            .collect(Collectors.toMap(SimpleUser::getUserId, user -> user, (oldValue, newValue) -> newValue));
     }
 
 }
