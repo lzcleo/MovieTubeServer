@@ -5,7 +5,6 @@ import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearc
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
-import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
