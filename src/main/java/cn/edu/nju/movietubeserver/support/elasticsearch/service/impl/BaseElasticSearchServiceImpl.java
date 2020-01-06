@@ -5,6 +5,7 @@ import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearc
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -46,11 +47,11 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
     }
 
     @Override
-    public Page<T> matchSearchByKeyword(String propertyKeyword, String value, Pageable pageable,
+    public Page<T> matchSearchByKeyword(String fieldName, String searchKeyword, Pageable pageable,
         SortBuilder<?> sortBuilder)
     {
         SearchQuery searchQuery =
-            new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery(propertyKeyword, value))
+            new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery(fieldName, searchKeyword))
                 .withPageable(pageable)
                 .withSort(sortBuilder)
                 .build();
@@ -58,11 +59,22 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
     }
 
     @Override
-    public Page<T> termSearchByKeyword(String propertyKeyword, String value, Pageable pageable,
+    public Page<T> multiMatchSearchByKeyword(Pageable pageable, SortBuilder<?> sortBuilder, String searchKeyword,
+        String... fieldNames)
+    {
+        SearchQuery searchQuery =
+            new NativeSearchQueryBuilder().withQuery(QueryBuilders.multiMatchQuery(searchKeyword, fieldNames)
+                .type(Type.BEST_FIELDS)
+                .tieBreaker(0.1f)).withPageable(pageable).withSort(sortBuilder).build();
+        return getBaseElasticSearchDao().search(searchQuery).map(this::convert);
+    }
+
+    @Override
+    public Page<T> termSearchByKeyword(String fieldName, String searchKeyword, Pageable pageable,
         SortBuilder<?> sortBuilder)
     {
         SearchQuery searchQuery =
-            new NativeSearchQueryBuilder().withQuery(QueryBuilders.termQuery(propertyKeyword, value))
+            new NativeSearchQueryBuilder().withQuery(QueryBuilders.termQuery(fieldName, searchKeyword))
                 .withPageable(pageable)
                 .withSort(sortBuilder)
                 .build();

@@ -47,6 +47,12 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
     private MovieService movieService;
 
     @Override
+    public BaseElasticSearchDao<CommentPo, Long> getBaseElasticSearchDao()
+    {
+        return commentDao;
+    }
+
+    @Override
     public Page<RootCommentDto> listRootCommentByMovieId(Integer pageNo, Integer pageSize, Long movieId,
         Map<Integer, SimpleUser> simpleUserMap)
     {
@@ -117,12 +123,6 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         List<CommentPo> commentInMovieList =
             search(query).getContent().stream().map(CommentPo::valueOf).collect(Collectors.toList());
         commentDao.deleteAll(commentInMovieList);
-    }
-
-    @Override
-    public BaseElasticSearchDao<CommentPo, Long> getBaseElasticSearchDao()
-    {
-        return commentDao;
     }
 
     @Override

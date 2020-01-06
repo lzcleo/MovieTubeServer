@@ -5,6 +5,7 @@ import cn.edu.nju.movietubeserver.model.po.UserPo;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao
 {
+
+    int insertUser(@Param("userPo") UserPo userPo)
+        throws DuplicateKeyException;
 
     UserPo getUserByUsername(@Param("username") String username);
 

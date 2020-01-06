@@ -12,6 +12,10 @@ import org.springframework.data.domain.Page;
 public interface MovieService extends BaseElasticSearchService<MovieDto, MoviePo, Long>
 {
 
+    Page<MovieDto> listByKeyword(Integer pageNo, Integer pageSize, String keyword, String... fieldNames);
+
+    Page<MovieDto> listByMovieName(Integer pageNo, Integer pageSize, String movieName);
+
     Page<MovieDto> listByDirectorName(Integer pageNo, Integer pageSize, String directorName);
 
     Page<MovieDto> listByCastName(Integer pageNo, Integer pageSize, String castName);
