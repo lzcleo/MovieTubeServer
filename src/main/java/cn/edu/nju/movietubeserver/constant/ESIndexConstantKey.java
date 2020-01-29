@@ -3,6 +3,8 @@ package cn.edu.nju.movietubeserver.constant;
 /**
  * @author dc
  * @date 2019/12/24 9:46
+ *
+ * 存放ElasticSearch索引的schema
  */
 public interface ESIndexConstantKey
 {
