@@ -1,6 +1,5 @@
 package cn.edu.nju.movietubeserver.service.impl;
 
-import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey;
 import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey.Movie;
 import cn.edu.nju.movietubeserver.dao.MovieDao;
 import cn.edu.nju.movietubeserver.model.dto.MovieDto;
