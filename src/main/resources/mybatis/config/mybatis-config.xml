@@ -15,10 +15,11 @@
     <typeAlias type="java.util.ArrayList" alias="ArrayList"/>
     <typeAlias type="java.util.LinkedList" alias="LinkedList"/>
 
-    <typeAlias type="cn.edu.nju.movietubeserver.dao.po.UserPo" alias="UserPo"/>
-    <typeAlias type="cn.edu.nju.movietubeserver.dao.po.PermissionPo" alias="PermissionPo"/>
-    <typeAlias type="cn.edu.nju.movietubeserver.dao.po.ResourcePo" alias="ResourcePo"/>
-    <typeAlias type="cn.edu.nju.movietubeserver.dao.po.OperationPo" alias="OperationPo"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.po.UserPo" alias="UserPo"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.domain.SimpleUser" alias="SimpleUser"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.po.PermissionPo" alias="PermissionPo"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.po.ResourcePo" alias="ResourcePo"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.po.OperationPo" alias="OperationPo"/>
 
   </typeAliases>
 </configuration>

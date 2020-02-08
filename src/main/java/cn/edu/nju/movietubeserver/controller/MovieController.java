@@ -1,7 +1,8 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import cn.edu.nju.movietubeserver.api.MovieAPI;
-import cn.edu.nju.movietubeserver.api.dto.MovieDto;
+import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey.Movie;
+import cn.edu.nju.movietubeserver.model.dto.MovieDto;
 import cn.edu.nju.movietubeserver.service.MovieService;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
@@ -41,9 +42,30 @@ public class MovieController implements MovieAPI
     }
 
     @Override
+    @RequestMapping(path = "/listByKeyword", method = RequestMethod.GET)
+    public RestApiResponse<Page<MovieDto>> listByKeyword(@RequestParam(defaultValue = "0") Integer pageNo,
+        @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String keyword)
+    {
+        return RestApiResponseUtil.createSuccessResponse(movieService.listByKeyword(pageNo,
+            pageSize,
+            keyword,
+            Movie.TITLE,
+            Movie.DIRECTORS,
+            Movie.CASTS));
+    }
+
+    @Override
+    @RequestMapping(path = "/listByMovieName", method = RequestMethod.GET)
+    public RestApiResponse<Page<MovieDto>> listByMovieName(@RequestParam(defaultValue = "0") Integer pageNo,
+        @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String movieName)
+    {
+        return RestApiResponseUtil.createSuccessResponse(movieService.listByMovieName(pageNo, pageSize, movieName));
+    }
+
+    @Override
     @RequestMapping(path = "/listByDirectorName", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByDirectorName(@RequestParam(defaultValue = "0") Integer pageNo,
-        @RequestParam(defaultValue = "30") Integer pageSize, @RequestParam String directorName)
+        @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String directorName)
     {
         return RestApiResponseUtil.createSuccessResponse(movieService.listByDirectorName(pageNo,
             pageSize,
@@ -53,7 +75,7 @@ public class MovieController implements MovieAPI
     @Override
     @RequestMapping(path = "/listByCastName", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByCastName(@RequestParam(defaultValue = "0") Integer pageNo,
-        @RequestParam(defaultValue = "30") Integer pageSize, @RequestParam String castName)
+        @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String castName)
     {
         return RestApiResponseUtil.createSuccessResponse(movieService.listByCastName(pageNo, pageSize, castName));
     }
@@ -61,7 +83,7 @@ public class MovieController implements MovieAPI
     @Override
     @RequestMapping(path = "/listByPage", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByPage(@RequestParam(defaultValue = "0") Integer pageNo,
-        @RequestParam(defaultValue = "30") Integer pageSize)
+        @RequestParam(defaultValue = "20") Integer pageSize)
     {
         return RestApiResponseUtil.createSuccessResponse(movieService.listByPage(pageNo, pageSize));
     }

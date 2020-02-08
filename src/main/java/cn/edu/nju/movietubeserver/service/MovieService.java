@@ -1,7 +1,7 @@
 package cn.edu.nju.movietubeserver.service;
 
-import cn.edu.nju.movietubeserver.api.dto.MovieDto;
-import cn.edu.nju.movietubeserver.dao.po.MoviePo;
+import cn.edu.nju.movietubeserver.model.dto.MovieDto;
+import cn.edu.nju.movietubeserver.model.po.MoviePo;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearchService;
 import org.springframework.data.domain.Page;
 
@@ -11,6 +11,10 @@ import org.springframework.data.domain.Page;
  */
 public interface MovieService extends BaseElasticSearchService<MovieDto, MoviePo, Long>
 {
+
+    Page<MovieDto> listByKeyword(Integer pageNo, Integer pageSize, String keyword, String... fieldNames);
+
+    Page<MovieDto> listByMovieName(Integer pageNo, Integer pageSize, String movieName);
 
     Page<MovieDto> listByDirectorName(Integer pageNo, Integer pageSize, String directorName);
 

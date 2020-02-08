@@ -1,6 +1,7 @@
-package cn.edu.nju.movietubeserver.dao.po;
+package cn.edu.nju.movietubeserver.model.po;
 
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.utils.ObjectUtil;
 import java.util.List;
 import javax.validation.constraints.Email;
@@ -50,9 +51,9 @@ public class UserPo
     // 用户的角色对应的权限code
     private List<String> permissionCodeList;
 
-    public static UserPo valueOf(UserDto userDto)
+    public static UserPo valueOf(RegisterUserDto registerUserDto)
     {
-        return ObjectUtil.deepCloneByJson(userDto, UserPo.class);
+        return ObjectUtil.deepCloneByJson(registerUserDto, UserPo.class);
     }
 
     public UserDto toDto()

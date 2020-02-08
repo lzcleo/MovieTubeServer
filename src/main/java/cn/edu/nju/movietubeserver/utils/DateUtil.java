@@ -8,15 +8,18 @@ import java.util.Locale;
  * @author leolu
  * @create 2019-12-30-18:03
  **/
-public class DateUtil {
+public class DateUtil
+{
 
-    private DateUtil(){
+    private DateUtil()
+    {
 
     }
 
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    public static String getCurrentTime(){
+    public static String getCurrentTime()
+    {
         LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.format(DateTimeFormatter.ofPattern(DEFAULT_PATTERN, Locale.CHINA));
     }

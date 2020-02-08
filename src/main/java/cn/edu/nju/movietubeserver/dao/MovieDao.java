@@ -1,6 +1,6 @@
 package cn.edu.nju.movietubeserver.dao;
 
-import cn.edu.nju.movietubeserver.dao.po.MoviePo;
+import cn.edu.nju.movietubeserver.model.po.MoviePo;
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import org.springframework.stereotype.Repository;
 

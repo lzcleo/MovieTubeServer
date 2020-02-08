@@ -1,4 +1,4 @@
-package cn.edu.nju.movietubeserver.api.dto;
+package cn.edu.nju.movietubeserver.model.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

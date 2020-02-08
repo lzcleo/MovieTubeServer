@@ -18,6 +18,11 @@
     <result column="role_id" property="roleId" jdbcType="INTEGER"/>
   </resultMap>
 
+  <resultMap id="SimpleUserMap" type="SimpleUser">
+    <id column="user_id" property="userId" jdbcType="INTEGER"/>
+    <result column="username" property="username" jdbcType="VARCHAR"/>
+  </resultMap>
+
   <resultMap id="UserWithRoleMap" type="UserPo" extends="UserMap">
     <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
   </resultMap>
@@ -28,6 +33,15 @@
       <result column="authority_code" jdbcType="VARCHAR" property="authorityCode"/>
     </collection>
   </resultMap>
+
+  <insert id="insertUser" parameterType="UserPo" useGeneratedKeys="true" keyProperty="userPo.userId">
+    INSERT INTO t_users (<include refid="all_columns" />)
+    VALUES
+    (
+    #{userPo.userId}, #{userPo.username}, #{userPo.email},
+    #{userPo.gender}, #{userPo.password}, #{userPo.roleId}
+    )
+  </insert>
 
   <select id="getUserByUsername" resultMap="UserDetailMap">
     SELECT
@@ -51,6 +65,10 @@
     LEFT JOIN `t_role` r ON u.role_id = r.role_id
     LEFT JOIN `t_permission` p ON r.role_id = p.role_id
     WHERE u.email = #{email}
+  </select>
+
+  <select id="listAllSimpleUsers" resultMap="SimpleUserMap">
+    SELECT user_id, username FROM t_users
   </select>
 
 </mapper>

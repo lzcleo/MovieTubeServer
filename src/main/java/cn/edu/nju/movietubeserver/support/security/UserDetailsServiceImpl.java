@@ -1,6 +1,6 @@
 package cn.edu.nju.movietubeserver.support.security;
 
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;

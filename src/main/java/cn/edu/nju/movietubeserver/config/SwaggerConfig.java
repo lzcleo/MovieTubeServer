@@ -31,6 +31,10 @@ public class SwaggerConfig
 
     private ApiInfo apiInfo()
     {
-        return new ApiInfoBuilder().version("1.0").build();
+        return new ApiInfoBuilder()
+            .title("Movie Tube Server 接口文档说明")
+            .description("后端接口文档说明")
+            .version("1.0")
+            .build();
     }
 }

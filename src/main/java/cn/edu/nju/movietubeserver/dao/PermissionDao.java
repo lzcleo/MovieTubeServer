@@ -1,6 +1,6 @@
 package cn.edu.nju.movietubeserver.dao;
 
-import cn.edu.nju.movietubeserver.dao.po.ResourcePo;
+import cn.edu.nju.movietubeserver.model.po.ResourcePo;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

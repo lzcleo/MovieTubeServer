@@ -4,6 +4,7 @@ import cn.edu.nju.movietubeserver.constant.ErrorMessage;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,8 @@ public class ExceptionResolver
     {
         log.error("数据库操作异常 => {}", e.getMessage());
         log.error("堆栈信息 => ", e);
-        return RestApiResponseUtil.createErrorResponse(HttpStatus.BAD_REQUEST, ErrorMessage.DATABASE_ERROR_MESSAGE);
+        return RestApiResponseUtil.createErrorResponse(HttpStatus.BAD_REQUEST,
+            Optional.ofNullable(e.getMessage()).orElse(ErrorMessage.DATABASE_ERROR_MESSAGE));
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

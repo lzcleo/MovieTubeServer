@@ -1,16 +1,23 @@
 package cn.edu.nju.movietubeserver.service.impl;
 
-import cn.edu.nju.movietubeserver.api.dto.UserDto;
+import cn.edu.nju.movietubeserver.constant.UserRole.RoleId;
+import cn.edu.nju.movietubeserver.constant.UserRole.RoleName;
 import cn.edu.nju.movietubeserver.dao.PermissionDao;
 import cn.edu.nju.movietubeserver.dao.UserDao;
-import cn.edu.nju.movietubeserver.dao.po.UserPo;
+import cn.edu.nju.movietubeserver.model.domain.SimpleUser;
+import cn.edu.nju.movietubeserver.model.dto.UserDto;
+import cn.edu.nju.movietubeserver.model.po.UserPo;
 import cn.edu.nju.movietubeserver.service.UserService;
+import cn.edu.nju.movietubeserver.support.exception.DBException;
+import cn.edu.nju.movietubeserver.support.exception.ServiceException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,12 +40,33 @@ public class UserServiceImpl implements UserService
     private PasswordEncoder passwordEncoder;
 
     @Override
+    public int insertUser(UserPo userPo)
+        throws DBException
+    {
+        try
+        {
+            userPo.setPassword(passwordEncoder.encode(userPo.getPassword()));
+            userPo.setRoleId(RoleId.USER);
+            userDao.insertUser(userPo);
+            return userPo.getUserId();
+        }
+        catch (DuplicateKeyException e)
+        {
+            throw new DBException("user info already exist", e);
+        }
+        catch (Throwable e)
+        {
+            throw new ServiceException(String.format("fail to insert user, name is [%s]", userPo.getUsername()), e);
+        }
+    }
+
+    @Override
     public UserDto getUserByEmail(String email)
     {
         // 超级管理员拥有所有权限
         return Optional.ofNullable(userDao.getUserByEmail(email))
             .map(userPo -> setAdminPermission(userPo,
-                user -> StringUtils.equalsIgnoreCase("ROLE_ADMIN", user.getRoleName()),
+                user -> StringUtils.equalsIgnoreCase(RoleName.ADMIN, user.getRoleName()),
                 user -> user.setPermissionCodeList(permissionDao.getAllAuthorityCode())))
             .map(UserPo::toDto)
             .orElseThrow(() -> new UsernameNotFoundException("email not found"));
@@ -51,7 +79,7 @@ public class UserServiceImpl implements UserService
         // 超级管理员拥有所有权限
         return Optional.ofNullable(userDao.getUserByUsername(username))
             .map(userPo -> setAdminPermission(userPo,
-                user -> StringUtils.equalsIgnoreCase("ROLE_ADMIN", user.getRoleName()),
+                user -> StringUtils.equalsIgnoreCase(RoleName.ADMIN, user.getRoleName()),
                 user -> user.setPermissionCodeList(permissionDao.getAllAuthorityCode())))
             .map(UserPo::toDto)
             .orElseThrow(() -> new UsernameNotFoundException("username not found"));
@@ -67,6 +95,16 @@ public class UserServiceImpl implements UserService
     public boolean verifyPassword(String rawPassword, String encodedPassword)
     {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 查询所有用户的简单信息
+     * @return
+     */
+    @Override
+    public List<SimpleUser> listAllSimpleUsers()
+    {
+        return userDao.listAllSimpleUsers();
     }
 
     private UserPo setAdminPermission(UserPo userPo, Predicate<UserPo> predicate, Consumer<UserPo> consumer)
