@@ -1,8 +1,6 @@
 package cn.edu.nju.movietubeserver.support.security;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -13,8 +11,7 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -88,16 +85,28 @@ public class RSAUtil
     private byte[] replaceAndBase64Decode(final String filePath, final String headReplace, final String tailReplace)
         throws Exception
     {
-        final ResourceLoader loader = new DefaultResourceLoader();
-        final File file = loader.getResource(filePath).getFile();
-        try (final FileInputStream fileInputStream = new FileInputStream(file); final DataInputStream dataInputStream = new DataInputStream(
-            fileInputStream);)
-        {
-            final byte[] keyBytes = new byte[(int)file.length()];
-            dataInputStream.readFully(keyBytes);
+        ClassPathResource resource = new ClassPathResource(filePath);
+        try (final InputStream inputStream = resource.getInputStream()){
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int n = 0;
+            while (-1 != (n = inputStream.read(buffer))) {
+                outputStream.write(buffer, 0, n);
+            }
+            final byte[] keyBytes = outputStream.toByteArray();
             final String keyPEM = new String(keyBytes).replace(headReplace, "").trim().replace(tailReplace, "").trim();
             return Base64.decodeBase64(keyPEM);
         }
+//        final ResourceLoader loader = new DefaultResourceLoader();
+//        final File file = loader.getResource(filePath).getFile();
+//        try (final FileInputStream fileInputStream = new FileInputStream(file); final DataInputStream dataInputStream = new DataInputStream(
+//            fileInputStream);)
+//        {
+//            final byte[] keyBytes = new byte[(int)file.length()];
+//            dataInputStream.readFully(keyBytes);
+//            final String keyPEM = new String(keyBytes).replace(headReplace, "").trim().replace(tailReplace, "").trim();
+//            return Base64.decodeBase64(keyPEM);
+//        }
     }
 
     /**
