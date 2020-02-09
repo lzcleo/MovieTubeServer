@@ -9,8 +9,8 @@ import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +30,7 @@ public class MovieTagController implements MovieTagAPI
     private MovieTagIndexBean movieTagIndexBean;
 
     @Override
-    @RequestMapping(path = "/getCountOfMoviesByTag", method = RequestMethod.GET)
+    @GetMapping(path = "/getCountOfMoviesByTag")
     public RestApiResponse<Long> getCountOfMoviesByTag(@RequestParam String tag)
     {
         //TODO 对tag进行校验
@@ -39,7 +39,7 @@ public class MovieTagController implements MovieTagAPI
     }
 
     @Override
-    @RequestMapping(path = "/listByTag", method = RequestMethod.GET)
+    @GetMapping(path = "/listByTag")
     public RestApiResponse<Page<MovieTagDto>> listByTag(@RequestParam String tag,
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize)
     {
@@ -49,7 +49,7 @@ public class MovieTagController implements MovieTagAPI
     }
 
     @Override
-    @RequestMapping(path = "/getByMovieId", method = RequestMethod.GET)
+    @GetMapping(path = "/getByMovieId")
     public RestApiResponse<MovieTagDto> getByMovieId(@RequestParam String tag, @RequestParam Long movieId)
     {
         //TODO 对tag进行校验
@@ -60,7 +60,7 @@ public class MovieTagController implements MovieTagAPI
     }
 
     @Override
-    @RequestMapping(path = "/searchByKeyword", method = RequestMethod.GET)
+    @GetMapping(path = "/searchByKeyword")
     public RestApiResponse<Page<MovieTagDto>> searchByKeyword(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String keyword)
     {

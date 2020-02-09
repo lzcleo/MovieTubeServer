@@ -8,8 +8,8 @@ import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,14 +26,14 @@ public class MovieController implements MovieAPI
     private MovieService movieService;
 
     @Override
-    @RequestMapping(path = "/getCountOfMovies", method = RequestMethod.GET)
+    @GetMapping(path = "/getCountOfMovies")
     public RestApiResponse<Long> getCountOfMovies()
     {
         return RestApiResponseUtil.createSuccessResponse(movieService.getCount());
     }
 
     @Override
-    @RequestMapping(path = "/getByMovieId", method = RequestMethod.GET)
+    @GetMapping(path = "/getByMovieId")
     public RestApiResponse<MovieDto> getByMovieId(@RequestParam Long movieId)
     {
         return movieService.getByPrimaryKey(movieId)
@@ -42,7 +42,7 @@ public class MovieController implements MovieAPI
     }
 
     @Override
-    @RequestMapping(path = "/listByKeyword", method = RequestMethod.GET)
+    @GetMapping(path = "/listByKeyword")
     public RestApiResponse<Page<MovieDto>> listByKeyword(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String keyword)
     {
@@ -56,7 +56,7 @@ public class MovieController implements MovieAPI
 
     @Deprecated
     @Override
-    @RequestMapping(path = "/listByMovieName", method = RequestMethod.GET)
+    @GetMapping(path = "/listByMovieName")
     public RestApiResponse<Page<MovieDto>> listByMovieName(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String movieName)
     {
@@ -65,7 +65,7 @@ public class MovieController implements MovieAPI
 
     @Deprecated
     @Override
-    @RequestMapping(path = "/listByDirectorName", method = RequestMethod.GET)
+    @GetMapping(path = "/listByDirectorName")
     public RestApiResponse<Page<MovieDto>> listByDirectorName(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String directorName)
     {
@@ -76,7 +76,7 @@ public class MovieController implements MovieAPI
 
     @Deprecated
     @Override
-    @RequestMapping(path = "/listByCastName", method = RequestMethod.GET)
+    @GetMapping(path = "/listByCastName")
     public RestApiResponse<Page<MovieDto>> listByCastName(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize, @RequestParam String castName)
     {
@@ -84,7 +84,7 @@ public class MovieController implements MovieAPI
     }
 
     @Override
-    @RequestMapping(path = "/listByPage", method = RequestMethod.GET)
+    @GetMapping(path = "/listByPage")
     public RestApiResponse<Page<MovieDto>> listByPage(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "20") Integer pageSize)
     {

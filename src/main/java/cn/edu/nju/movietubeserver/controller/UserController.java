@@ -19,9 +19,10 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,12 +45,12 @@ public class UserController implements UserAPI
 
     /**
      * 可以以用户名登录或邮箱登录
-     *
-     * @param userDto
+     * @param loginUserDto
+     * @param bindingResult
      * @return
      */
     @Override
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @PostMapping(path = "/login")
     public RestApiResponse<String> login(@Valid @RequestBody LoginUserDto loginUserDto,
         final BindingResult bindingResult)
     {
@@ -95,7 +96,7 @@ public class UserController implements UserAPI
     }
 
     @Override
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @PostMapping(path = "/register")
     public RestApiResponse<Integer> register(@Valid @RequestBody RegisterUserDto registerUserDto,
         final BindingResult bindingResult)
     {
@@ -114,7 +115,7 @@ public class UserController implements UserAPI
     }
 
     @Override
-    @RequestMapping(path = "/getUserInfo", method = RequestMethod.GET)
+    @GetMapping(path = "/getUserInfo")
     public RestApiResponse<UserDto> getUserInfo(final Principal user)
     {
         UserDto userDB = userService.getUserByUsername(user.getName());
@@ -122,7 +123,7 @@ public class UserController implements UserAPI
     }
 
     @Override
-    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    @GetMapping(path = "/logout")
     public RestApiResponse<Void> logout(final Principal user)
     {
         // TODO 让token失效
