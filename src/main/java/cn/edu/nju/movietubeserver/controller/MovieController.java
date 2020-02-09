@@ -1,7 +1,7 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import cn.edu.nju.movietubeserver.api.MovieAPI;
-import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey.Movie;
+import cn.edu.nju.movietubeserver.constant.ESIndexFieldKey.Movie;
 import cn.edu.nju.movietubeserver.model.dto.MovieDto;
 import cn.edu.nju.movietubeserver.service.MovieService;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
@@ -54,6 +54,7 @@ public class MovieController implements MovieAPI
             Movie.CASTS));
     }
 
+    @Deprecated
     @Override
     @RequestMapping(path = "/listByMovieName", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByMovieName(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -62,6 +63,7 @@ public class MovieController implements MovieAPI
         return RestApiResponseUtil.createSuccessResponse(movieService.listByMovieName(pageNo, pageSize, movieName));
     }
 
+    @Deprecated
     @Override
     @RequestMapping(path = "/listByDirectorName", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByDirectorName(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -72,6 +74,7 @@ public class MovieController implements MovieAPI
             directorName));
     }
 
+    @Deprecated
     @Override
     @RequestMapping(path = "/listByCastName", method = RequestMethod.GET)
     public RestApiResponse<Page<MovieDto>> listByCastName(@RequestParam(defaultValue = "0") Integer pageNo,
