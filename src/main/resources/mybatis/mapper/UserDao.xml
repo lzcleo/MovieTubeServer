@@ -6,8 +6,8 @@
 <mapper namespace="cn.edu.nju.movietubeserver.dao.UserDao">
 
   <sql id="all_columns">
-        user_id, username, email, gender, password, role_id
-    </sql>
+    user_id, username, email, gender, password, role_id
+  </sql>
 
   <resultMap id="UserMap" type="UserPo">
     <id column="user_id" property="userId" jdbcType="INTEGER"/>
