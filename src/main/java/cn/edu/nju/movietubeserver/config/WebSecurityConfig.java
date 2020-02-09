@@ -103,6 +103,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .antMatchers("/api/comment/**")
             .permitAll()
 
+            .antMatchers("/api/movieTag/**")
+            .permitAll()
+
+            .antMatchers("/api/tag/**")
+            .permitAll()
+
             // swagger
             .antMatchers("/api")
             .permitAll()

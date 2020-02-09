@@ -45,12 +45,12 @@ public interface CommentAPI
         @ApiParam(value = "用户ID", required = true) Integer userId);
 
     @ApiOperation(value = "用户添加新的电影评论", notes = "用户添加新的电影评论", httpMethod = "POST")
-    RestApiResponse<Void> insertComment(@ApiParam(value = "要添加的评论实体", required = true) CommentDto commentDto);
+    RestApiResponse<Boolean> insertComment(@ApiParam(value = "要添加的评论实体", required = true) CommentDto commentDto);
 
     @ApiOperation(value = "根据评论ID删除评论", notes = "根据评论ID删除评论，将删除该条评论下的所有子回复", httpMethod = "GET")
-    RestApiResponse<Void> deleteByCommentId(@ApiParam(value = "要删除的评论ID", required = true) Long commentId);
+    RestApiResponse<Boolean> deleteByCommentId(@ApiParam(value = "要删除的评论ID", required = true) Long commentId);
 
     @ApiOperation(value = "根据电影ID删除评论", notes = "根据电影ID删除评论，将删除该电影下的所有评论及回复", httpMethod = "GET")
-    RestApiResponse<Void> deleteByMovieId(Long movieId);
+    RestApiResponse<Boolean> deleteByMovieId(Long movieId);
 
 }

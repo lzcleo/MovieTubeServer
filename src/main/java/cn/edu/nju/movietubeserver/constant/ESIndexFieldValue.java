@@ -6,7 +6,7 @@ package cn.edu.nju.movietubeserver.constant;
  *
  * 存放ElasticSearch索引的schema对应的常量值
  */
-public interface ESIndexConstantValue
+public interface ESIndexFieldValue
 {
 
     interface Comment

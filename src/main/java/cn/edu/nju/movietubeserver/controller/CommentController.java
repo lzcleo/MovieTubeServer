@@ -92,29 +92,29 @@ public class CommentController implements CommentAPI
 
     @Override
     @RequestMapping(path = "/insertComment", method = RequestMethod.POST)
-    public RestApiResponse<Void> insertComment(@RequestBody CommentDto commentDto)
+    public RestApiResponse<Boolean> insertComment(@RequestBody CommentDto commentDto)
     {
         commentDto.setId(StringUtils.EMPTY);
         commentDto.setCreateTime(DateUtil.getCurrentTime());
         commentService.insertComment(CommentPo.valueOf(commentDto));
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     @Override
     @RequestMapping(path = "/deleteByCommentId", method = RequestMethod.GET)
-    public RestApiResponse<Void> deleteByCommentId(@RequestParam Long commentId)
+    public RestApiResponse<Boolean> deleteByCommentId(@RequestParam Long commentId)
     {
         //TODO 删除该评论下所有的评论回复
         commentService.deleteByCommentId(commentId);
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     @Override
     @RequestMapping(path = "/deleteByMovieId", method = RequestMethod.GET)
-    public RestApiResponse<Void> deleteByMovieId(@RequestParam Long movieId)
+    public RestApiResponse<Boolean> deleteByMovieId(@RequestParam Long movieId)
     {
         commentService.deleteByMovieId(movieId);
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     private Map<Integer, SimpleUser> createSimpleUserMap()

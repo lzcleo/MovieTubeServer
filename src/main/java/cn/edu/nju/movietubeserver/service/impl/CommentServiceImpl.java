@@ -1,8 +1,8 @@
 package cn.edu.nju.movietubeserver.service.impl;
 
-import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey;
-import cn.edu.nju.movietubeserver.constant.ESIndexConstantKey.Comment;
-import cn.edu.nju.movietubeserver.constant.ESIndexConstantValue;
+import cn.edu.nju.movietubeserver.constant.ESIndexFieldKey;
+import cn.edu.nju.movietubeserver.constant.ESIndexFieldKey.Comment;
+import cn.edu.nju.movietubeserver.constant.ESIndexFieldValue;
 import cn.edu.nju.movietubeserver.dao.CommentDao;
 import cn.edu.nju.movietubeserver.model.domain.SimpleMovieInfo;
 import cn.edu.nju.movietubeserver.model.domain.SimpleUser;
@@ -59,7 +59,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()
             .must(QueryBuilders.matchQuery(Comment.MOVIE_ID, String.valueOf(movieId)))
             .must(QueryBuilders.matchQuery(Comment.PARENT_COMMENT_ID,
-                ESIndexConstantValue.Comment.NO_PARENT_COMMENT_ID)))
+                ESIndexFieldValue.Comment.NO_PARENT_COMMENT_ID)))
             .withPageable(PageRequest.of(pageNo, pageSize))
             .withSort(SortBuilders.fieldSort(Comment.CREATE_TIME + ".keyword").order(SortOrder.ASC))
             .build();
@@ -117,7 +117,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
     public void deleteByMovieId(Long movieId)
     {
         SearchQuery query =
-            new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery(ESIndexConstantKey.Comment.MOVIE_ID,
+            new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery(ESIndexFieldKey.Comment.MOVIE_ID,
                 String.valueOf(movieId))) // 搜索条件
                 .build();
         List<CommentPo> commentInMovieList =
