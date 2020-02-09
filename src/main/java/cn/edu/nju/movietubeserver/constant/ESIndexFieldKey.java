@@ -6,7 +6,7 @@ package cn.edu.nju.movietubeserver.constant;
  *
  * 存放ElasticSearch索引的schema
  */
-public interface ESIndexConstantKey
+public interface ESIndexFieldKey
 {
 
     interface Movie
