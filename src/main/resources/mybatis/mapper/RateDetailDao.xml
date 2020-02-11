@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.nju.movietubeserver.dao.RateDetailDao">
+
+  <sql id="all_columns">
+    id, user_id, movie_id, rate, create_time, update_time
+  </sql>
+
+  <resultMap id="RateDetailMap" type="RateDetailPo">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="user_id" property="userId" jdbcType="INTEGER"/>
+    <result column="movie_id" property="movieId" jdbcType="INTEGER"/>
+    <result column="rate" property="rate" jdbcType="INTEGER"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <insert id="insertRateDetail" parameterType="RateDetailPo">
+    INSERT INTO t_rate_detail (<include refid="all_columns" />)
+    VALUES
+    (
+      #{rateDetailPo.id}, #{rateDetailPo.userId}, #{rateDetailPo.movieId},
+      #{rateDetailPo.rate}, #{rateDetailPo.createTime}, #{rateDetailPo.updateTime}
+    )
+  </insert>
+
+  <update id="updateRateDetailById" parameterType="RateDetailPo">
+    UPDATE t_rate_detail
+    SET
+      rate = #{rateDetailPo.rate},
+      update_time = #{rateDetailPo.updateTime}
+    WHERE
+      id = #{rateDetailPo.id}
+  </update>
+
+</mapper>
