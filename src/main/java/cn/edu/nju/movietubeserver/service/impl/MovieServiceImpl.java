@@ -3,20 +3,28 @@ package cn.edu.nju.movietubeserver.service.impl;
 import cn.edu.nju.movietubeserver.constant.ESIndexFieldKey.Movie;
 import cn.edu.nju.movietubeserver.dao.MovieDao;
 import cn.edu.nju.movietubeserver.model.dto.MovieDto;
+import cn.edu.nju.movietubeserver.model.dto.TagDto;
 import cn.edu.nju.movietubeserver.model.po.MoviePo;
 import cn.edu.nju.movietubeserver.service.MovieService;
+import cn.edu.nju.movietubeserver.service.TagService;
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.impl.BaseElasticSearchServiceImpl;
+import java.util.List;
+import java.util.Optional;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 /**
  * @author dc
- * @date 2019/12/23 17:09
+ * @date 2020/2/7 0:38
  */
 @Service
 public class MovieServiceImpl extends BaseElasticSearchServiceImpl<MovieDto, MoviePo, Long> implements MovieService
@@ -25,6 +33,9 @@ public class MovieServiceImpl extends BaseElasticSearchServiceImpl<MovieDto, Mov
     @Autowired
     private MovieDao movieDao;
 
+    @Autowired
+    private TagService tagService;
+
     @Override
     public BaseElasticSearchDao<MoviePo, Long> getBaseElasticSearchDao()
     {
@@ -32,39 +43,40 @@ public class MovieServiceImpl extends BaseElasticSearchServiceImpl<MovieDto, Mov
     }
 
     @Override
-    public Page<MovieDto> listByKeyword(Integer pageNo, Integer pageSize, String keyword, String... fieldNames)
+    public Page<MovieDto> searchByKeyword(Integer pageNo, Integer pageSize, String searchKeyword, String... fieldNames)
     {
-        return multiMatchSearchByKeyword(PageRequest.of(pageNo, pageSize),
-            SortBuilders.scoreSort().order(SortOrder.DESC),
-            keyword,
-            fieldNames);
+        String[] tagIndexes = tagService.getTagsMap()
+            .values()
+            .stream()
+            .flatMap(List::stream)
+            .map(TagDto::getValue)
+            .distinct()
+            .toArray(String[]::new);
+
+        //TODO 去重
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withIndices(tagIndexes)
+            .withQuery(QueryBuilders.multiMatchQuery(searchKeyword, fieldNames).type(Type.BEST_FIELDS).tieBreaker(0.1f))
+            .withPageable(PageRequest.of(pageNo, pageSize))
+            .withSort(SortBuilders.scoreSort().order(SortOrder.DESC))
+            .build();
+        return search(searchQuery);
     }
 
     @Override
-    public Page<MovieDto> listByMovieName(Integer pageNo, Integer pageSize, String movieName)
+    public Optional<MovieDto> getByPrimaryKeyFromAllIndices(Long movieId)
     {
-        return matchSearchByKeyword(Movie.TITLE,
-            movieName,
-            PageRequest.of(pageNo, pageSize),
-            SortBuilders.scoreSort().order(SortOrder.DESC));
-    }
-
-    @Override
-    public Page<MovieDto> listByDirectorName(Integer pageNo, Integer pageSize, String directorName)
-    {
-        return matchSearchByKeyword(Movie.DIRECTORS,
-            directorName,
-            PageRequest.of(pageNo, pageSize),
-            SortBuilders.scoreSort().order(SortOrder.DESC));
-    }
-
-    @Override
-    public Page<MovieDto> listByCastName(Integer pageNo, Integer pageSize, String castName)
-    {
-        return matchSearchByKeyword(Movie.CASTS,
-            castName,
-            PageRequest.of(pageNo, pageSize),
-            SortBuilders.scoreSort().order(SortOrder.DESC));
+        String[] tagIndexes = tagService.getTagsMap()
+            .values()
+            .stream()
+            .flatMap(List::stream)
+            .map(TagDto::getValue)
+            .distinct()
+            .toArray(String[]::new);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withIndices(tagIndexes)
+            .withQuery(QueryBuilders.termQuery(Movie.ID, movieId))
+            .withPageable(PageRequest.of(0, 1))
+            .build();
+        return Optional.ofNullable(search(searchQuery).getContent().get(0));
     }
 
     @Override
