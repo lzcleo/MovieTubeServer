@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -120,6 +121,21 @@ public class UserController implements UserAPI
     {
         UserDto userDB = userService.getUserByUsername(user.getName());
         return RestApiResponseUtil.createSuccessResponse(userDB);
+    }
+
+    @Override
+    @PostMapping(path = "/updateUserEmailById")
+    public RestApiResponse<String> updateUserEmailById(@RequestParam Integer userId, @RequestParam String newEmail)
+    {
+        return RestApiResponseUtil.createSuccessResponse(userService.updateUserEmailById(userId, newEmail));
+    }
+
+    @Override
+    @PostMapping(path = "/updateUsernameById")
+    public RestApiResponse<String> updateUsernameById(@RequestParam Integer userId, @RequestParam String newUsername)
+    {
+        return RestApiResponseUtil.createSuccessResponse(userService.updateUsernameById(userId, newUsername));
+
     }
 
     @Override

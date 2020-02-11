@@ -67,6 +67,18 @@
     WHERE u.email = #{email}
   </select>
 
+  <update id="updateUserEmailById">
+    UPDATE t_users
+    SET email = #{newEmail}
+    WHERE user_id = #{userId}
+  </update>
+
+  <update id="updateUsernameById">
+    UPDATE t_users
+    SET username = #{newUsername}
+    WHERE user_id = #{userId}
+  </update>
+
   <select id="listAllSimpleUsers" resultMap="SimpleUserMap">
     SELECT user_id, username FROM t_users
   </select>
