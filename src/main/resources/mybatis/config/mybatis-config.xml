@@ -20,6 +20,7 @@
     <typeAlias type="cn.edu.nju.movietubeserver.model.po.PermissionPo" alias="PermissionPo"/>
     <typeAlias type="cn.edu.nju.movietubeserver.model.po.ResourcePo" alias="ResourcePo"/>
     <typeAlias type="cn.edu.nju.movietubeserver.model.po.OperationPo" alias="OperationPo"/>
+    <typeAlias type="cn.edu.nju.movietubeserver.model.po.TagPo" alias="TagPo"/>
 
   </typeAliases>
 </configuration>

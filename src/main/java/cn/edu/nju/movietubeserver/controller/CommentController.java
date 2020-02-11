@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +42,7 @@ public class CommentController implements CommentAPI
     private UserService userService;
 
     @Override
-    @RequestMapping(path = "/listRootCommentByMovieId", method = RequestMethod.GET)
+    @GetMapping(path = "/listRootCommentByMovieId")
     public RestApiResponse<Page<RootCommentDto>> listRootCommentByMovieId(
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize,
         @RequestParam Long movieId)
@@ -52,7 +54,7 @@ public class CommentController implements CommentAPI
     }
 
     @Override
-    @RequestMapping(path = "/listReplyCommentOfRootComment", method = RequestMethod.GET)
+    @GetMapping(path = "/listReplyCommentOfRootComment")
     public RestApiResponse<Page<ReplyCommentDto>> listReplyCommentOfRootComment(
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "20") Integer pageSize,
         @RequestParam Long movieId, @RequestParam String rootCommentId)
@@ -65,7 +67,7 @@ public class CommentController implements CommentAPI
     }
 
     @Override
-    @RequestMapping(path = "/listUserPostComments", method = RequestMethod.GET)
+    @GetMapping(path = "/listUserPostComments")
     public RestApiResponse<Page<PostCommentDto>> listUserPostComments(@RequestParam(defaultValue = "0") Integer pageNo,
         @RequestParam(defaultValue = "30") Integer pageSize, @RequestParam Integer userId)
     {
@@ -76,7 +78,7 @@ public class CommentController implements CommentAPI
     }
 
     @Override
-    @RequestMapping(path = "/listUserReceiveComments", method = RequestMethod.GET)
+    @GetMapping(path = "/listUserReceiveComments")
     public RestApiResponse<Page<ReceiveCommentDto>> listUserReceiveComments(
         @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "30") Integer pageSize,
         @RequestParam Integer userId)
@@ -91,30 +93,30 @@ public class CommentController implements CommentAPI
     }
 
     @Override
-    @RequestMapping(path = "/insertComment", method = RequestMethod.POST)
-    public RestApiResponse<Void> insertComment(@RequestBody CommentDto commentDto)
+    @PostMapping(path = "/insertComment")
+    public RestApiResponse<Boolean> insertComment(@RequestBody CommentDto commentDto)
     {
         commentDto.setId(StringUtils.EMPTY);
         commentDto.setCreateTime(DateUtil.getCurrentTime());
         commentService.insertComment(CommentPo.valueOf(commentDto));
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     @Override
-    @RequestMapping(path = "/deleteByCommentId", method = RequestMethod.GET)
-    public RestApiResponse<Void> deleteByCommentId(@RequestParam Long commentId)
+    @GetMapping(path = "/deleteByCommentId")
+    public RestApiResponse<Boolean> deleteByCommentId(@RequestParam Long commentId)
     {
         //TODO 删除该评论下所有的评论回复
         commentService.deleteByCommentId(commentId);
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     @Override
     @RequestMapping(path = "/deleteByMovieId", method = RequestMethod.GET)
-    public RestApiResponse<Void> deleteByMovieId(@RequestParam Long movieId)
+    public RestApiResponse<Boolean> deleteByMovieId(@RequestParam Long movieId)
     {
         commentService.deleteByMovieId(movieId);
-        return RestApiResponseUtil.createSuccessResponse();
+        return RestApiResponseUtil.createSuccessResponse(true);
     }
 
     private Map<Integer, SimpleUser> createSimpleUserMap()

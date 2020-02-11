@@ -3,6 +3,7 @@ package cn.edu.nju.movietubeserver;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableEncryptableProperties
 @EnableTransactionManagement(proxyTargetClass = true)
+@EnableCaching
 @SpringBootApplication
 public class MovieTubeServerMain
 {

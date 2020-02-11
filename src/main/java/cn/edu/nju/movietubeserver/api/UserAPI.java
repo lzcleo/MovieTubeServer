@@ -29,6 +29,14 @@ public interface UserAPI
     @ApiOperation(value = "获取用户信息", notes = "获取用户信息", httpMethod = "GET")
     RestApiResponse<UserDto> getUserInfo(Principal user);
 
+    @ApiOperation(value = "更新用户邮箱", notes = "更新用户邮箱", httpMethod = "POST")
+    RestApiResponse<String> updateUserEmailById(@ApiParam(value = "用户ID", required = true) Integer userId,
+        @ApiParam(value = "用户新邮箱", required = true) String newEmail);
+
+    @ApiOperation(value = "更新用户名", notes = "更新用户名", httpMethod = "POST")
+    RestApiResponse<String> updateUsernameById(@ApiParam(value = "用户ID", required = true) Integer userId,
+        @ApiParam(value = "用户新用户名", required = true) String newUsername);
+
     @ApiOperation(value = "退出登录", notes = "退出登录", httpMethod = "GET")
     RestApiResponse<Void> logout(Principal user);
 }

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService
 
     @Override
     public int insertUser(UserPo userPo)
-        throws DBException
+        throws DBException, ServiceException
     {
         try
         {
@@ -83,6 +83,50 @@ public class UserServiceImpl implements UserService
                 user -> user.setPermissionCodeList(permissionDao.getAllAuthorityCode())))
             .map(UserPo::toDto)
             .orElseThrow(() -> new UsernameNotFoundException("username not found"));
+    }
+
+    @Override
+    public String updateUserEmailById(Integer userId, String newEmail)
+        throws ServiceException
+    {
+        try
+        {
+            if (userDao.updateUserEmailById(userId, newEmail) <= 0)
+            {
+                throw new DBException(String.format("user id [%d] not exists", userId));
+            }
+            return newEmail;
+        }
+        catch (DuplicateKeyException e)
+        {
+            throw new DBException(String.format("user email [%s] already exist", newEmail), e);
+        }
+        catch (Throwable e)
+        {
+            throw new ServiceException(String.format("fail to update user email, new email is [%s]", newEmail), e);
+        }
+    }
+
+    @Override
+    public String updateUsernameById(Integer userId, String newUsername)
+        throws DBException, ServiceException
+    {
+        try
+        {
+            if (userDao.updateUsernameById(userId, newUsername) <= 0)
+            {
+                throw new DBException(String.format("user id [%d] not exists", userId));
+            }
+            return newUsername;
+        }
+        catch (DuplicateKeyException e)
+        {
+            throw new DBException(String.format("username [%s] already exist", newUsername), e);
+        }
+        catch (Throwable e)
+        {
+            throw new ServiceException(String.format("fail to update username, new username is [%s]", newUsername), e);
+        }
     }
 
     /**

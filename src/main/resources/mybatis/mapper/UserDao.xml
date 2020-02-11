@@ -6,8 +6,8 @@
 <mapper namespace="cn.edu.nju.movietubeserver.dao.UserDao">
 
   <sql id="all_columns">
-        user_id, username, email, gender, password, role_id
-    </sql>
+    user_id, username, email, gender, password, role_id
+  </sql>
 
   <resultMap id="UserMap" type="UserPo">
     <id column="user_id" property="userId" jdbcType="INTEGER"/>
@@ -66,6 +66,18 @@
     LEFT JOIN `t_permission` p ON r.role_id = p.role_id
     WHERE u.email = #{email}
   </select>
+
+  <update id="updateUserEmailById">
+    UPDATE t_users
+    SET email = #{newEmail}
+    WHERE user_id = #{userId}
+  </update>
+
+  <update id="updateUsernameById">
+    UPDATE t_users
+    SET username = #{newUsername}
+    WHERE user_id = #{userId}
+  </update>
 
   <select id="listAllSimpleUsers" resultMap="SimpleUserMap">
     SELECT user_id, username FROM t_users

@@ -1,7 +1,7 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
@@ -15,7 +15,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class SwaggerController
 {
 
-    @RequestMapping("/api")
+    @GetMapping(path = "/api")
     public String redirect()
     {
         return "redirect:swagger-ui.html";
