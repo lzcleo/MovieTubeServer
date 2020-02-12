@@ -165,7 +165,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         receiveCommentDto.setFromUsername(simpleUserMap.getOrDefault(receiveCommentDto.getFromUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByMovieIdFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         receiveCommentDto.setSimpleMovieInfo(simpleMovieInfo);
@@ -181,7 +181,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         postCommentDto.setToUsername(simpleUserMap.getOrDefault(postCommentDto.getToUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByMovieIdFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         postCommentDto.setSimpleMovieInfo(simpleMovieInfo);
