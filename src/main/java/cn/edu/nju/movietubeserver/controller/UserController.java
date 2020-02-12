@@ -135,7 +135,6 @@ public class UserController implements UserAPI
     public RestApiResponse<String> updateUsernameById(@RequestParam Integer userId, @RequestParam String newUsername)
     {
         return RestApiResponseUtil.createSuccessResponse(userService.updateUsernameById(userId, newUsername));
-
     }
 
     @Override

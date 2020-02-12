@@ -46,6 +46,14 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
         return getBaseElasticSearchDao().findAll(PageRequest.of(pageNo, pageSize)).map(this::convert);
     }
 
+    /**
+     * 进行分词分析，并且根据lucene的评分机制(TF/IDF)来进行评分
+     * @param fieldName
+     * @param searchKeyword
+     * @param pageable
+     * @param sortBuilder
+     * @return
+     */
     @Override
     public Page<T> matchSearchByKeyword(String fieldName, String searchKeyword, Pageable pageable,
         SortBuilder<?> sortBuilder)
@@ -58,6 +66,14 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
         return getBaseElasticSearchDao().search(searchQuery).map(this::convert);
     }
 
+    /**
+     * 多字段联合搜索
+     * @param pageable
+     * @param sortBuilder
+     * @param searchKeyword
+     * @param fieldNames
+     * @return
+     */
     @Override
     public Page<T> multiMatchSearchByKeyword(Pageable pageable, SortBuilder<?> sortBuilder, String searchKeyword,
         String... fieldNames)
@@ -69,6 +85,14 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
         return getBaseElasticSearchDao().search(searchQuery).map(this::convert);
     }
 
+    /**
+     * 精确匹配，不进行分词分析，文档中必须包含整个搜索的词汇
+     * @param fieldName
+     * @param searchKeyword
+     * @param pageable
+     * @param sortBuilder
+     * @return
+     */
     @Override
     public Page<T> termSearchByKeyword(String fieldName, String searchKeyword, Pageable pageable,
         SortBuilder<?> sortBuilder)

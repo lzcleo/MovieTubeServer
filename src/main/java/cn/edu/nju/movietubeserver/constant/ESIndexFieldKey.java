@@ -11,6 +11,8 @@ public interface ESIndexFieldKey
 
     interface Movie
     {
+        String ID = "id";
+
         String TITLE = "title";
 
         String RATE = "rate";
