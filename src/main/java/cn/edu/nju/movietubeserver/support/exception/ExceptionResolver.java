@@ -43,7 +43,7 @@ public class ExceptionResolver
         return RestApiResponseUtil.createErrorResponse(HttpStatus.BAD_REQUEST, message);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({ServiceException.class, ServletException.class})
     public RestApiResponse<Void> serviceException(final Throwable e)
     {
@@ -52,7 +52,7 @@ public class ExceptionResolver
         return RestApiResponseUtil.createErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({DBException.class, SQLException.class, DataAccessException.class})
     public RestApiResponse<Void> databaseException(final Throwable e)
     {
