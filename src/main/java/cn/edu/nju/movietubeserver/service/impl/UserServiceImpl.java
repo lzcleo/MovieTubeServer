@@ -86,46 +86,27 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public String updateUserEmailById(Integer userId, String newEmail)
-        throws ServiceException
-    {
-        try
-        {
-            if (userDao.updateUserEmailById(userId, newEmail) <= 0)
-            {
-                throw new DBException(String.format("user id [%d] not exists", userId));
-            }
-            return newEmail;
-        }
-        catch (DuplicateKeyException e)
-        {
-            throw new DBException(String.format("user email [%s] already exist", newEmail), e);
-        }
-        catch (Throwable e)
-        {
-            throw new ServiceException(String.format("fail to update user email, new email is [%s]", newEmail), e);
-        }
-    }
-
-    @Override
-    public String updateUsernameById(Integer userId, String newUsername)
+    public int updateUserInfoById(UserPo userPo)
         throws DBException, ServiceException
     {
         try
         {
-            if (userDao.updateUsernameById(userId, newUsername) <= 0)
+            int result = userDao.updateUserInfoById(userPo);
+            if (result <= 0)
             {
-                throw new DBException(String.format("user id [%d] not exists", userId));
+                throw new DBException(String.format("user id [%d] not exists", userPo.getUserId()));
             }
-            return newUsername;
+            return result;
         }
         catch (DuplicateKeyException e)
         {
-            throw new DBException(String.format("username [%s] already exist", newUsername), e);
+            throw new DBException(String.format("username [%s] or email [%s] already exist",
+                userPo.getUsername(),
+                userPo.getEmail()), e);
         }
         catch (Throwable e)
         {
-            throw new ServiceException(String.format("fail to update username, new username is [%s]", newUsername), e);
+            throw new ServiceException("fail to update user info", e);
         }
     }
 

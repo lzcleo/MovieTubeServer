@@ -23,10 +23,7 @@ public interface UserService
     UserDto getUserByUsername(String username)
         throws UsernameNotFoundException;
 
-    String updateUserEmailById(Integer userId, String newEmail)
-        throws DBException, ServiceException;
-
-    String updateUsernameById(Integer userId, String newUsername)
+    int updateUserInfoById(UserPo userPo)
         throws DBException, ServiceException;
 
     boolean verifyPassword(String rawPassword, String encodedPassword);
