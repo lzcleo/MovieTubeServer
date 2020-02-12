@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
  * @author dc
  * @date 2020/2/7 0:26
  */
-@Component("movieTagIndexBean")
-public class MovieTagIndexBean
+@Component("movieIndexBean")
+public class MovieIndexBean
 {
 
     // 使用ThreadLocal，避免并发问题

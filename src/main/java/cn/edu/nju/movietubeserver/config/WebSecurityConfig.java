@@ -92,7 +92,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .permitAll()
 
             // 允许登录和注册
-            .antMatchers("/api/user/login", "/api/user/register", "/api/user/logout")
+            .antMatchers("/api/user/login",
+                "/api/user/register",
+                "/api/user/logout",
+                "/api/user/updateUserEmailById",
+                "/api/user/updateUsernameById")
             .permitAll()
 
             // 暂时允许开放movieAPI，用于测试
@@ -103,10 +107,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .antMatchers("/api/comment/**")
             .permitAll()
 
-            .antMatchers("/api/movieTag/**")
+            .antMatchers("/api/tag/**")
             .permitAll()
 
-            .antMatchers("/api/tag/**")
+            .antMatchers("/api/rate/**")
             .permitAll()
 
             // swagger

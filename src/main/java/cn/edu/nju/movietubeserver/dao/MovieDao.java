@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author dc
- * @date 2019/12/23 15:11
+ * @date 2020/2/7 0:31
  */
 @Repository
 public interface MovieDao extends BaseElasticSearchDao<MoviePo, Long>
 {
-
 }

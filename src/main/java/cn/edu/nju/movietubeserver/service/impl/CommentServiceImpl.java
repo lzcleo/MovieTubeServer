@@ -58,8 +58,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
     {
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()
             .must(QueryBuilders.matchQuery(Comment.MOVIE_ID, String.valueOf(movieId)))
-            .must(QueryBuilders.matchQuery(Comment.PARENT_COMMENT_ID,
-                ESIndexFieldValue.Comment.NO_PARENT_COMMENT_ID)))
+            .must(QueryBuilders.matchQuery(Comment.PARENT_COMMENT_ID, ESIndexFieldValue.Comment.NO_PARENT_COMMENT_ID)))
             .withPageable(PageRequest.of(pageNo, pageSize))
             .withSort(SortBuilders.fieldSort(Comment.CREATE_TIME + ".keyword").order(SortOrder.ASC))
             .build();
@@ -166,7 +165,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         receiveCommentDto.setFromUsername(simpleUserMap.getOrDefault(receiveCommentDto.getFromUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKey(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         receiveCommentDto.setSimpleMovieInfo(simpleMovieInfo);
@@ -182,7 +181,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         postCommentDto.setToUsername(simpleUserMap.getOrDefault(postCommentDto.getToUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKey(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         postCommentDto.setSimpleMovieInfo(simpleMovieInfo);

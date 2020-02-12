@@ -2,6 +2,7 @@ package cn.edu.nju.movietubeserver.model.po;
 
 import cn.edu.nju.movietubeserver.model.dto.MovieDto;
 import cn.edu.nju.movietubeserver.utils.ObjectUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +12,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * @author dc
- * @date 2019/12/23 15:09
+ * @date 2020/2/7 0:28
  */
-@Document(indexName = "movie", type = "_doc", shards = 1, replicas = 0, refreshInterval = "-1")
+@Document(indexName = "#{@movieIndexBean.getIndexName()}", type = "doc", shards = 1, replicas = 0, refreshInterval = "-1")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,13 +26,22 @@ public class MoviePo
 
     private String title;
 
-    private String rate;
-
-    private String star;
-
     private String url;
 
+    private Double star;
+
+    @JsonProperty("rate")
+    private Double doubanRate;
+
+    private Double localRate;
+
     private String cover;
+
+    @JsonProperty("cover_x")
+    private Long coverX;
+
+    @JsonProperty("cover_y")
+    private Long coverY;
 
     private List<String> casts;
 
@@ -46,5 +56,4 @@ public class MoviePo
     {
         return ObjectUtil.deepCloneByJson(this, MovieDto.class);
     }
-
 }

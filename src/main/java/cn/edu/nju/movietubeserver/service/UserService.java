@@ -4,6 +4,7 @@ import cn.edu.nju.movietubeserver.model.domain.SimpleUser;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.model.po.UserPo;
 import cn.edu.nju.movietubeserver.support.exception.DBException;
+import cn.edu.nju.movietubeserver.support.exception.ServiceException;
 import java.util.List;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -15,14 +16,18 @@ public interface UserService
 {
 
     int insertUser(UserPo userPo)
-        throws DBException;
-
-    ;
+        throws DBException, ServiceException;
 
     UserDto getUserByEmail(String email);
 
     UserDto getUserByUsername(String username)
         throws UsernameNotFoundException;
+
+    String updateUserEmailById(Integer userId, String newEmail)
+        throws DBException, ServiceException;
+
+    String updateUsernameById(Integer userId, String newUsername)
+        throws DBException, ServiceException;
 
     boolean verifyPassword(String rawPassword, String encodedPassword);
 
