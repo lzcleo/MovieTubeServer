@@ -3,6 +3,7 @@ package cn.edu.nju.movietubeserver.controller;
 import cn.edu.nju.movietubeserver.api.UserAPI;
 import cn.edu.nju.movietubeserver.model.dto.LoginUserDto;
 import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
+import cn.edu.nju.movietubeserver.model.dto.UpdateUserDto;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.model.po.UserPo;
 import cn.edu.nju.movietubeserver.service.UserService;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -124,17 +124,18 @@ public class UserController implements UserAPI
     }
 
     @Override
-    @PostMapping(path = "/updateUserEmailById")
-    public RestApiResponse<String> updateUserEmailById(@RequestParam Integer userId, @RequestParam String newEmail)
+    @PostMapping(path = "/updateUserInfoById")
+    public RestApiResponse<Integer> updateUserInfoById(@Valid @RequestBody UpdateUserDto updateUserDto,
+        final BindingResult bindingResult)
     {
-        return RestApiResponseUtil.createSuccessResponse(userService.updateUserEmailById(userId, newEmail));
-    }
-
-    @Override
-    @PostMapping(path = "/updateUsernameById")
-    public RestApiResponse<String> updateUsernameById(@RequestParam Integer userId, @RequestParam String newUsername)
-    {
-        return RestApiResponseUtil.createSuccessResponse(userService.updateUsernameById(userId, newUsername));
+        if (bindingResult.hasErrors())
+        {
+            String errorMessage = Optional.ofNullable(bindingResult.getFieldError())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("表单信息校验不通过，请按要求填写更新信息");
+            return RestApiResponseUtil.createErrorResponse(errorMessage);
+        }
+        return RestApiResponseUtil.createSuccessResponse(userService.updateUserInfoById(UserPo.valueOf(updateUserDto)));
     }
 
     @Override

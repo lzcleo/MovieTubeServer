@@ -24,10 +24,7 @@ public interface UserDao
 
     UserPo getUserByEmail(@Param("email") String email);
 
-    int updateUserEmailById(@Param("userId") Integer userId, @Param("newEmail") String newEmail)
-        throws DuplicateKeyException;
-
-    int updateUsernameById(@Param("userId") Integer userId, @Param("newUsername") String newUsername)
+    int updateUserInfoById(@Param("userPo") UserPo userPo)
         throws DuplicateKeyException;
 
     List<SimpleUser> listAllSimpleUsers();

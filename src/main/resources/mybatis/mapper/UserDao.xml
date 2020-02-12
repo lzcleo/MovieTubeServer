@@ -6,7 +6,7 @@
 <mapper namespace="cn.edu.nju.movietubeserver.dao.UserDao">
 
   <sql id="all_columns">
-    user_id, username, email, gender, password, role_id
+    user_id, username, email, gender, password, role_id, nickname, phone_number, address
   </sql>
 
   <resultMap id="UserMap" type="UserPo">
@@ -16,6 +16,9 @@
     <result column="gender" property="gender" jdbcType="VARCHAR"/>
     <result column="password" property="password" jdbcType="VARCHAR"/>
     <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+    <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+    <result column="address" property="address" jdbcType="VARCHAR"/>
   </resultMap>
 
   <resultMap id="SimpleUserMap" type="SimpleUser">
@@ -35,11 +38,12 @@
   </resultMap>
 
   <insert id="insertUser" parameterType="UserPo" useGeneratedKeys="true" keyProperty="userPo.userId">
-    INSERT INTO t_users (<include refid="all_columns" />)
+    INSERT INTO t_users (<include refid="all_columns"/>)
     VALUES
     (
     #{userPo.userId}, #{userPo.username}, #{userPo.email},
-    #{userPo.gender}, #{userPo.password}, #{userPo.roleId}
+    #{userPo.gender}, #{userPo.password}, #{userPo.roleId},
+    #{userPo.nickname}, #{userPo.phoneNumber}, #{userPo.address}
     )
   </insert>
 
@@ -67,16 +71,16 @@
     WHERE u.email = #{email}
   </select>
 
-  <update id="updateUserEmailById">
+  <update id="updateUserInfoById">
     UPDATE t_users
-    SET email = #{newEmail}
-    WHERE user_id = #{userId}
-  </update>
-
-  <update id="updateUsernameById">
-    UPDATE t_users
-    SET username = #{newUsername}
-    WHERE user_id = #{userId}
+    SET
+    <if test="userPo.username != null">username = #{userPo.username},</if>
+    <if test="userPo.email != null">email = #{userPo.email},</if>
+    <if test="userPo.nickname != null">nickname = #{userPo.nickname},</if>
+    <if test="userPo.phoneNumber != null">phone_number = #{userPo.phoneNumber},</if>
+    <if test="userPo.address != null">address = #{userPo.address}</if>
+    WHERE
+      user_id = #{userPo.userId}
   </update>
 
   <select id="listAllSimpleUsers" resultMap="SimpleUserMap">
