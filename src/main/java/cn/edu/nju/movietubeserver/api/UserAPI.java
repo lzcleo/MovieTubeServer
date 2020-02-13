@@ -2,6 +2,7 @@ package cn.edu.nju.movietubeserver.api;
 
 import cn.edu.nju.movietubeserver.model.dto.LoginUserDto;
 import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
+import cn.edu.nju.movietubeserver.model.dto.UpdateUserDto;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.support.response.RestApiResponse;
 import io.swagger.annotations.Api;
@@ -29,13 +30,9 @@ public interface UserAPI
     @ApiOperation(value = "获取用户信息", notes = "获取用户信息", httpMethod = "GET")
     RestApiResponse<UserDto> getUserInfo(Principal user);
 
-    @ApiOperation(value = "更新用户邮箱", notes = "更新用户邮箱", httpMethod = "POST")
-    RestApiResponse<String> updateUserEmailById(@ApiParam(value = "用户ID", required = true) Integer userId,
-        @ApiParam(value = "用户新邮箱", required = true) String newEmail);
-
-    @ApiOperation(value = "更新用户名", notes = "更新用户名", httpMethod = "POST")
-    RestApiResponse<String> updateUsernameById(@ApiParam(value = "用户ID", required = true) Integer userId,
-        @ApiParam(value = "用户新用户名", required = true) String newUsername);
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息", httpMethod = "POST")
+    RestApiResponse<Integer> updateUserInfoById(
+        @ApiParam(value = "用户更新信息实体", required = true) UpdateUserDto updateUserDto, final BindingResult bindingResult);
 
     @ApiOperation(value = "退出登录", notes = "退出登录", httpMethod = "GET")
     RestApiResponse<Void> logout(Principal user);

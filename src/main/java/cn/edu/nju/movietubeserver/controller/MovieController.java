@@ -55,11 +55,9 @@ public class MovieController implements MovieAPI
 
     @Override
     @GetMapping(path = "/getByMovieId")
-    public RestApiResponse<MovieDto> getByMovieId(@RequestParam String tag, @RequestParam Long movieId)
+    public RestApiResponse<MovieDto> getByMovieId(@RequestParam Long movieId)
     {
-        //TODO 对tag进行校验
-        movieIndexBean.setIndexName(tag);
-        return movieService.getByPrimaryKey(movieId)
+        return movieService.getByMovieIdFromAllIndices(movieId)
             .map(this::setLocalRate)
             .map(RestApiResponseUtil::createSuccessResponse)
             .orElse(RestApiResponseUtil.createErrorResponse(String.format("movie not found, id [%s]", movieId)));

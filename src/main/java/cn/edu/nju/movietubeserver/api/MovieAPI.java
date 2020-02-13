@@ -15,7 +15,7 @@ public interface MovieAPI
 
     RestApiResponse<Page<MovieDto>> listByTag(String tag, Integer pageNo, Integer pageSize);
 
-    RestApiResponse<MovieDto> getByMovieId(String tag, Long movieId);
+    RestApiResponse<MovieDto> getByMovieId(Long movieId);
 
     RestApiResponse<Page<MovieDto>> searchByKeyword(Integer pageNo, Integer pageSize, String keyword);
 }

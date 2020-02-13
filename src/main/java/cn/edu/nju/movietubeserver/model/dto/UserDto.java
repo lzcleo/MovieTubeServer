@@ -27,6 +27,12 @@ public class UserDto
     // 性别
     private String gender;
 
+    private String nickname;
+
+    private String phoneNumber;
+
+    private String address;
+
     private String password;
 
     private Integer roleId;

@@ -1,6 +1,7 @@
 package cn.edu.nju.movietubeserver.model.po;
 
 import cn.edu.nju.movietubeserver.model.dto.RegisterUserDto;
+import cn.edu.nju.movietubeserver.model.dto.UpdateUserDto;
 import cn.edu.nju.movietubeserver.model.dto.UserDto;
 import cn.edu.nju.movietubeserver.utils.ObjectUtil;
 import java.util.List;
@@ -43,6 +44,12 @@ public class UserPo
     @Size(min = 6, message = "密码长度不能少于6位")
     private String password;
 
+    private String nickname;
+
+    private String phoneNumber;
+
+    private String address;
+
     private Integer roleId;
 
     //来自联表查询
@@ -54,6 +61,11 @@ public class UserPo
     public static UserPo valueOf(RegisterUserDto registerUserDto)
     {
         return ObjectUtil.deepCloneByJson(registerUserDto, UserPo.class);
+    }
+
+    public static UserPo valueOf(UpdateUserDto updateUserDto)
+    {
+        return ObjectUtil.deepCloneByJson(updateUserDto, UserPo.class);
     }
 
     public UserDto toDto()
