@@ -83,6 +83,21 @@
       user_id = #{userPo.userId}
   </update>
 
+  <update id="updateRoleIdByUsername">
+    UPDATE t_users
+    SET role_id = #{roleId}
+    WHERE username = #{username}
+  </update>
+
+  <update id="updateRoleIdByUserId">
+    UPDATE t_users u
+    SET u.role_id  = CASE
+    WHEN u.`role_id` = 4  THEN 2
+    WHEN u.`role_id` = 2  THEN 4
+    END
+    WHERE user_id = #{userId}
+  </update>
+
   <select id="listAllSimpleUsers" resultMap="SimpleUserMap">
     SELECT user_id, username FROM t_users
   </select>

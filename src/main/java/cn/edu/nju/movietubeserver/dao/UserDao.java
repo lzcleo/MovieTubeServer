@@ -28,4 +28,8 @@ public interface UserDao
         throws DuplicateKeyException;
 
     List<SimpleUser> listAllSimpleUsers();
+
+    int updateRoleIdByUsername(@Param("roleId") Integer roleId , @Param("username") String username);
+
+    boolean updateRoleIdByUserId(@Param("userId") Integer userId);
 }
