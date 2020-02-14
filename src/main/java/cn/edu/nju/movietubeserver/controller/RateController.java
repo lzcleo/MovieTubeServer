@@ -9,6 +9,7 @@ import cn.edu.nju.movietubeserver.support.response.RestApiResponseUtil;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class RateController implements RateAPI
 
     @Override
     @PostMapping(path = "/insertRate")
-    public RestApiResponse<Integer> insertRate(RateDetailDto rateDetailDto)
+    public RestApiResponse<Integer> insertRate(@RequestBody RateDetailDto rateDetailDto)
     {
         rateDetailDto.setCreateTime(LocalDateTime.now());
         rateDetailDto.setUpdateTime(LocalDateTime.now());
@@ -35,7 +36,7 @@ public class RateController implements RateAPI
 
     @Override
     @PostMapping(path = "/updateRateById")
-    public RestApiResponse<Integer> updateRateById(RateDetailDto rateDetailDto)
+    public RestApiResponse<Integer> updateRateById(@RequestBody RateDetailDto rateDetailDto)
     {
         rateDetailDto.setUpdateTime(LocalDateTime.now());
         return RestApiResponseUtil.createSuccessResponse(rateService.updateRateById(RateDetailPo.valueOf(rateDetailDto)));
