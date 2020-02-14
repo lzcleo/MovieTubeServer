@@ -109,6 +109,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .antMatchers("/api/rate/**")
             .permitAll()
 
+            .antMatchers("/api/chart/**")
+            .permitAll()
+
             // swagger
             .antMatchers("/api")
             .permitAll()

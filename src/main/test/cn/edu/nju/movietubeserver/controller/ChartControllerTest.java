@@ -1,10 +1,6 @@
 package cn.edu.nju.movietubeserver.controller;
 
 import cn.edu.nju.movietubeserver.MovieTubeServerMain;
-import cn.edu.nju.movietubeserver.model.dto.RateDetailDto;
-import cn.edu.nju.movietubeserver.model.po.RateDetailPo;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,56 +14,46 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.spring.web.json.Json;
 
 import static org.junit.Assert.*;
 
 /**
  * @author zhaodeyu
- * @classname RateControllerTest
+ * @classname ChartControllerTest
  * @description TODO
- * @date 2020-02-12 17:21
+ * @date 2020-02-14 16:29
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MovieTubeServerMain.class)
 @Transactional
-public class RateControllerTest {
+public class ChartControllerTest {
     @Autowired
-    private RateController rateController;
+    private ChartController chartController;
 
     private MockMvc mockMvc;
 
     @Before
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(rateController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(chartController).build();
     }
 
     @Test
-    public void insertRate() throws Exception {
-        RateDetailDto rateDetailDto = new RateDetailDto();
-        rateDetailDto.setUserId(1);
-        rateDetailDto.setMovieId((long) 3541415);
-        rateDetailDto.setRate(5);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/rate/insertRate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JSONObject.toJSONString(rateDetailDto)))
+    public void getCommentCountBarChart1() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/chart/getCommentCountBarChart")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
 
     @Test
-    public void updateRateById() throws Exception {
-        RateDetailDto rateDetailDto = new RateDetailDto();
-        rateDetailDto.setId(1);
-        rateDetailDto.setUserId(1);
-        rateDetailDto.setMovieId((long) 30269016);
-        rateDetailDto.setRate(6);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/rate/updateRateById")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JSONObject.toJSONString(rateDetailDto)))
+    public void getCommentCountBarChart2() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/chart/getCommentCountBarChart")
+                .accept(MediaType.APPLICATION_JSON).param("userId", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+
+
 }
