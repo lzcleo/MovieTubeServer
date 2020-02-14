@@ -13,21 +13,22 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping(path = "/api/admin")
-public class AdminController implements AdminAPI {
+public class AdminController implements AdminAPI
+{
 
     @Autowired
-    AdminService adminService;
-
+    private AdminService adminService;
 
     @Override
-    @PostMapping(path = "/updateRoleIdByUsername")
-    public RestApiResponse<Integer> updateRoleIdByUsername(@RequestParam Integer roleId, @RequestParam String username) {
-        return RestApiResponseUtil.createSuccessResponse(adminService.updateRoleIdByUsername(roleId,username));
+    @PostMapping(path = "/closureUserByUserId")
+    public RestApiResponse<Boolean> closureUserByUserId(@RequestParam Integer userId) {
+        return RestApiResponseUtil.createSuccessResponse(adminService.closureUserByUserId(userId));
     }
 
     @Override
-    @PostMapping(path = "/updateRoleIdByUserId")
-    public RestApiResponse<Boolean> updateRoleIdByUserId(@RequestParam Integer userId) {
-        return RestApiResponseUtil.createSuccessResponse(adminService.updateRoleIdByUserId(userId));
+    @PostMapping(path = "/releaseUserByUserId")
+    public RestApiResponse<Boolean> releaseUserByUserId(@RequestParam Integer userId) {
+        return RestApiResponseUtil.createSuccessResponse(adminService.releaseUserByUserId(userId));
     }
+
 }
