@@ -2,6 +2,7 @@ package cn.edu.nju.movietubeserver.support.elasticsearch.service;
 
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -39,6 +40,8 @@ public interface BaseElasticSearchService<T, E, U extends Serializable>
     Page<T> search(QueryBuilder queryBuilder, Pageable pageable, FieldSortBuilder fieldSortBuilder);
 
     Page<T> search(SearchQuery searchQuery);
+
+    List<T> searchAll(QueryBuilder queryBuilder);
 
     BaseElasticSearchDao<E, U> getBaseElasticSearchDao();
 

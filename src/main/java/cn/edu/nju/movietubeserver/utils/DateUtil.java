@@ -1,5 +1,6 @@
 package cn.edu.nju.movietubeserver.utils;
 
+import javax.swing.text.DateFormatter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -22,5 +23,15 @@ public class DateUtil
     {
         LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.format(DateTimeFormatter.ofPattern(DEFAULT_PATTERN, Locale.CHINA));
+    }
+
+    public static String formatDateToString(LocalDateTime localDateTime)
+    {
+        return localDateTime.format(DateTimeFormatter.ofPattern(DEFAULT_PATTERN, Locale.CHINA));
+    }
+
+    public static LocalDateTime formatStringToDate(String localTime)
+    {
+        return LocalDateTime.parse(localTime, DateTimeFormatter.ofPattern(DEFAULT_PATTERN));
     }
 }

@@ -3,8 +3,11 @@ package cn.edu.nju.movietubeserver.support.elasticsearch.service.impl;
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearchService;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -123,6 +126,15 @@ public abstract class BaseElasticSearchServiceImpl<T, E, U extends Serializable>
     {
         Objects.requireNonNull(searchQuery, "查询条件不能为空");
         return getBaseElasticSearchDao().search(searchQuery).map(this::convert);
+    }
+
+    @Override
+    public List<T> searchAll(QueryBuilder queryBuilder)
+    {
+        Objects.requireNonNull(queryBuilder, "查询条件不能为空");
+        return StreamSupport.stream(getBaseElasticSearchDao().search(queryBuilder).spliterator(), false)
+            .map(this::convert)
+            .collect(Collectors.toList());
     }
 
     public abstract BaseElasticSearchDao<E, U> getBaseElasticSearchDao();

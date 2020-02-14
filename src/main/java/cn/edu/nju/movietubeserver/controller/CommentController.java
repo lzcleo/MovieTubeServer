@@ -104,10 +104,9 @@ public class CommentController implements CommentAPI
 
     @Override
     @GetMapping(path = "/deleteByCommentId")
-    public RestApiResponse<Boolean> deleteByCommentId(@RequestParam Long commentId)
+    public RestApiResponse<Boolean> deleteByCommentId(@RequestParam Long movieId, @RequestParam String commentId)
     {
-        //TODO 删除该评论下所有的评论回复
-        commentService.deleteByCommentId(commentId);
+        commentService.deleteByCommentId(movieId, commentId);
         return RestApiResponseUtil.createSuccessResponse(true);
     }
 

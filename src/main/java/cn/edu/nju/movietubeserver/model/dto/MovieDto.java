@@ -27,6 +27,8 @@ public class MovieDto
 
     private Double localRate;
 
+    private Double myRate;
+
     private String cover;
 
     private Long coverX;

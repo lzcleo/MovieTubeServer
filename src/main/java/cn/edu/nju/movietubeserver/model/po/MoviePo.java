@@ -35,6 +35,8 @@ public class MoviePo
 
     private Double localRate;
 
+    private Double myRate;
+
     private String cover;
 
     @JsonProperty("cover_x")

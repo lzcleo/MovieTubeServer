@@ -17,10 +17,13 @@ import cn.edu.nju.movietubeserver.service.MovieService;
 import cn.edu.nju.movietubeserver.support.elasticsearch.dao.BaseElasticSearchDao;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.impl.BaseElasticSearchServiceImpl;
 import cn.edu.nju.movietubeserver.utils.ObjectUtil;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -36,7 +39,7 @@ import org.springframework.stereotype.Service;
  * @create 2019-12-26-19:36
  **/
 @Service
-public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto, CommentPo, Long>
+public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto, CommentPo, String>
     implements CommentService
 {
 
@@ -47,7 +50,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
     private MovieService movieService;
 
     @Override
-    public BaseElasticSearchDao<CommentPo, Long> getBaseElasticSearchDao()
+    public BaseElasticSearchDao<CommentPo, String> getBaseElasticSearchDao()
     {
         return commentDao;
     }
@@ -101,15 +104,34 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
     }
 
     @Override
+    public void listAllChildrenComments(Long movieId, String commentId, List<CommentDto> resultList)
+    {
+        List<CommentDto> childList = listByParentId(movieId, commentId);
+        if (CollectionUtils.isEmpty(childList))
+        {
+            return;
+        }
+        resultList.addAll(childList);
+        for (CommentDto commentDto : childList)
+        {
+            listAllChildrenComments(movieId, commentDto.getId(), resultList);
+        }
+    }
+
+    @Override
     public void insertComment(CommentPo commentPo)
     {
         commentDao.save(commentPo);
     }
 
     @Override
-    public void deleteByCommentId(Long commentId)
+    public void deleteByCommentId(Long movieId, String commentId)
     {
+        List<CommentDto> childCommentList = new ArrayList<>();
+        listAllChildrenComments(movieId, commentId, childCommentList);
         commentDao.deleteById(commentId);
+        // 删除子评论
+        childCommentList.stream().forEach(childComment -> commentDao.deleteById(childComment.getId()));
     }
 
     @Override
@@ -142,6 +164,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
             .withSort(SortBuilders.fieldSort(Comment.CREATE_TIME + ".keyword").order(SortOrder.ASC)) //不加keyword的话会报错
             .build();
         Page<CommentDto> replyCommentPage = search(searchQuery);
+        rootCommentDto.setFromUsername(simpleUserMap.get(commentDto.getFromUserId()).getUsername());
         rootCommentDto.setTotalReplyCommentCount(replyCommentPage.getTotalElements());
         rootCommentDto.setDefaultReplyCommentList(replyCommentPage.getContent()
             .stream()
@@ -165,7 +188,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         receiveCommentDto.setFromUsername(simpleUserMap.getOrDefault(receiveCommentDto.getFromUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByMovieIdFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         receiveCommentDto.setSimpleMovieInfo(simpleMovieInfo);
@@ -181,7 +204,7 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         postCommentDto.setToUsername(simpleUserMap.getOrDefault(postCommentDto.getToUserId(),
             SimpleUser.getDefaultUser()).getUsername());
 
-        SimpleMovieInfo simpleMovieInfo = movieService.getByPrimaryKeyFromAllIndices(commentDto.getMovieId())
+        SimpleMovieInfo simpleMovieInfo = movieService.getByMovieIdFromAllIndices(commentDto.getMovieId())
             .map(movie -> ObjectUtil.deepCloneByJson(movie, SimpleMovieInfo.class))
             .orElse(SimpleMovieInfo.getDefaultMovieInfo());
         postCommentDto.setSimpleMovieInfo(simpleMovieInfo);
@@ -190,6 +213,14 @@ public class CommentServiceImpl extends BaseElasticSearchServiceImpl<CommentDto,
         // postCommentDto.setCommentURL("FIX ME");
 
         return postCommentDto;
+    }
+
+    private List<CommentDto> listByParentId(Long movieId, String commentId)
+    {
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+            .must(QueryBuilders.matchQuery(Comment.MOVIE_ID, String.valueOf(movieId)))
+            .must(QueryBuilders.matchQuery(Comment.PARENT_COMMENT_ID, commentId));
+        return searchAll(queryBuilder);
     }
 
 }

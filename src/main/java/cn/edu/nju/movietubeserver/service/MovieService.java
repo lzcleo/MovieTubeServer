@@ -15,6 +15,6 @@ public interface MovieService extends BaseElasticSearchService<MovieDto, MoviePo
 
     Page<MovieDto> searchByKeyword(Integer pageNo, Integer pageSize, String searchKeyword, String... fieldNames);
 
-    Optional<MovieDto> getByPrimaryKeyFromAllIndices(Long movieId);
+    Optional<MovieDto> getByMovieIdFromAllIndices(Long movieId);
 
 }

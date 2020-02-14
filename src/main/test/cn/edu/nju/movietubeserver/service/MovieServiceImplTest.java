@@ -44,9 +44,9 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void getByPrimaryKeyFromAllIndices() {
+    public void getByMovieIdFromAllIndices() {
         long movieId = 3114117;
-        assertNotNull(movieService.getByPrimaryKeyFromAllIndices(movieId));
+        assertNotNull(movieService.getByMovieIdFromAllIndices(movieId));
     }
 
     @Test

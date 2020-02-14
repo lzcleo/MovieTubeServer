@@ -13,7 +13,7 @@ public interface TagType
 
     String DECADE = "Decade";
 
-    String FEATURE = "Feature";
-
     String GENERAL = "General";
+
+    String RANKLIST = "RankList";
 }

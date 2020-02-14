@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,70 +143,52 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void updateUserEmailById1() {
-        int userId = 1;
-        String newEmail = "admin1@qq.com";
-        assertEquals(newEmail, userService.updateUserEmailById(userId, newEmail));
-    }
-
-    @Test
-    public void updateUserEmailById2() {
-        int userId = 10;
-        String newEmail = "admin1@qq.com";
+    public void updateUserInfoById1() {
+        UserPo userPo = new UserPo();
+        userPo.setUserId(10);
+        userPo.setGender("女");
+        userPo.setEmail("test221@qq.com");
+        userPo.setNickname("test221");
+        userPo.setPhoneNumber("17777777777");
+        userPo.setAddress("中国江苏省南京市");
         try {
-            userService.updateUserEmailById(userId, newEmail);
-        } catch (DBException e) {
-            assertEquals("user id [10] not exists", e.getMessage());
+            userService.updateUserInfoById(userPo);
         } catch (Exception e) {
-            fail();
+            assertTrue(true);
         }
     }
 
     @Test
-    public void updateUserEmailById3() {
-        int userId = 1;
-        String newEmail = "test@qq.com";
+    public void updateUserInfoById2() {
+        UserPo userPo = new UserPo();
+        userPo.setUserId(1);
+        userPo.setUsername("test");
+        userPo.setGender("女");
+        userPo.setEmail("test221@qq.com");
+        userPo.setNickname("test221");
+        userPo.setPhoneNumber("17777777777");
+        userPo.setAddress("中国江苏省南京市");
         try {
-            userService.updateUserEmailById(userId, newEmail);
-        } catch (DuplicateKeyException e) {
-            assertEquals("user email [test@qq.com] already exist", e.getMessage());
+            userService.updateUserInfoById(userPo);
         } catch (Exception e) {
-            fail();
+            assertTrue(true);
         }
     }
 
     @Test
-    public void updateUsernameById1() {
-        int userId = 1;
-        String newUserName = "admin1";
-        assertEquals(newUserName, userService.updateUsernameById(userId, newUserName));
+    public void updateUserInfoById3() {
+        UserPo userPo = new UserPo();
+        userPo.setUserId(6);
+        userPo.setUsername("test003");
+        userPo.setGender("女");
+        userPo.setEmail("test221@qq.com");
+        userPo.setNickname("test221");
+        userPo.setPhoneNumber("17777777777");
+        userPo.setAddress("中国江苏省南京市");
+        assertNotEquals(-1, userService.updateUserInfoById(userPo));
     }
 
-    @Test
-    public void updateUsernameById2() {
-        int userId = 10;
-        String newUserName = "admin1";
-        try {
-            userService.updateUsernameById(userId, newUserName);
-        } catch (DBException e) {
-            assertEquals("user id [10] not exists", e.getMessage());
-        } catch (Exception e) {
-            fail();
-        }
-    }
 
-    @Test
-    public void updateUsernameById3() {
-        int userId = 1;
-        String newUserName = "test";
-        try {
-            userService.updateUsernameById(userId, newUserName);
-        } catch (DuplicateKeyException e) {
-            assertEquals("username [test] already exist", e.getMessage());
-        } catch (Exception e) {
-            fail();
-        }
-    }
 
 
 }

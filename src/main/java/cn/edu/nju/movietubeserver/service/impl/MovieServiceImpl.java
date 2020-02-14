@@ -63,7 +63,7 @@ public class MovieServiceImpl extends BaseElasticSearchServiceImpl<MovieDto, Mov
     }
 
     @Override
-    public Optional<MovieDto> getByPrimaryKeyFromAllIndices(Long movieId)
+    public Optional<MovieDto> getByMovieIdFromAllIndices(Long movieId)
     {
         String[] tagIndexes = tagService.getTagsMap()
             .values()
