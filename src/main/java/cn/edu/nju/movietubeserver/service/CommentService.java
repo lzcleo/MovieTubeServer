@@ -8,6 +8,7 @@ import cn.edu.nju.movietubeserver.model.dto.ReplyCommentDto;
 import cn.edu.nju.movietubeserver.model.dto.RootCommentDto;
 import cn.edu.nju.movietubeserver.model.po.CommentPo;
 import cn.edu.nju.movietubeserver.support.elasticsearch.service.BaseElasticSearchService;
+import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 
@@ -15,7 +16,7 @@ import org.springframework.data.domain.Page;
  * @author leolu
  * @create 2019-12-25-20:14
  **/
-public interface CommentService extends BaseElasticSearchService<CommentDto, CommentPo, Long>
+public interface CommentService extends BaseElasticSearchService<CommentDto, CommentPo, String>
 {
 
     // 获取电影的主评论列表
@@ -34,11 +35,13 @@ public interface CommentService extends BaseElasticSearchService<CommentDto, Com
     Page<ReceiveCommentDto> listUserReceiveComments(Integer pageNo, Integer pageSize, Integer userId,
         Map<Integer, SimpleUser> simpleUserMap);
 
+    void listAllChildrenComments(Long movieId, String commentId, List<CommentDto> resultList);
+
     // 插入评论
     void insertComment(CommentPo commentPo);
 
     // 删除某条评论
-    void deleteByCommentId(Long commentId);
+    void deleteByCommentId(Long movieId, String commentId);
 
     // 删除电影下的所有评论
     void deleteByMovieId(Long movieId);
