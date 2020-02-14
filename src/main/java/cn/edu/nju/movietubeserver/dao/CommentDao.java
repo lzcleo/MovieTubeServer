@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @create 2019-12-25-20:08
  **/
 @Repository
-public interface CommentDao extends BaseElasticSearchDao<CommentPo, Long>
+public interface CommentDao extends BaseElasticSearchDao<CommentPo, String>
 {
 
 }

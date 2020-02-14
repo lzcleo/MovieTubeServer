@@ -81,4 +81,10 @@ public class MovieController implements MovieAPI
         movieDto.setLocalRate(rateService.getRateByMovieId(movieDto.getId()));
         return movieDto;
     }
+
+    // TODO
+    private MovieDto setMyRate(MovieDto movieDto)
+    {
+        return movieDto;
+    }
 }
